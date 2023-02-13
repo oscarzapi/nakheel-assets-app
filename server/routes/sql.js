@@ -3,6 +3,6 @@ import {getSqlRequests} from '../controllers/sqlrequests.js'
 
 
 const router = express.Router()
-router.get('/sql-requests', getSqlRequests)
+router.get('/', getSqlRequests)
 
 export default router
