@@ -2,6 +2,7 @@ import { Box, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import Header from 'components/Header'
 import { DataGrid } from '@mui/x-data-grid'
+import { useGetSqlRequestsQuery } from 'state/api'
 
 const Comments = () => {
     const theme = useTheme()
@@ -11,6 +12,9 @@ const Comments = () => {
     const [search, setSearch] = useState('')
 
     const [searchInput, setSearchInput] = useState('')
+
+    const [data, isLoading] = useGetSqlRequestsQuery()
+    //console.log(data)
   return (
     <Box m='1.5rem 1.5rem'>
         <Header title="ADD COMMENTS TO TENANTS" subtitle="See your list of tenants"></Header>
@@ -41,10 +45,10 @@ const Comments = () => {
             }
           }}
         >
-            {/* <DataGrid 
+             {/* <DataGrid 
             columns={columns}
             
-            ></DataGrid> */}
+            ></DataGrid>  */}
 
         </Box>
     </Box>
