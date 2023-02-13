@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import tedious from 'tedious'
-import sqlRoutes from './routes/sql'
+import sqlRoutes from './routes/sql.js'
 
 /* CONFIGURATION */
 dotenv.config()

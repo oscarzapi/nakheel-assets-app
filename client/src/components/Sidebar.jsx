@@ -1,10 +1,11 @@
 import { useTheme } from '@emotion/react'
-import { Drawer } from '@mui/material'
+import { Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
-import profileImage from '../../src/assets/NakheelDeepNavy.jpg'
+import profileImage from '../../src/assets/nakheel-removebg.png'
+import { AutoFixHigh, AutoFixHighOutlined, ChevronLeft, ChevronRightOutlined, HomeOutlined, ReceiptLongOutlined, ReceiptOutlined, TrendingUpOutlined } from '@mui/icons-material'
 
 const Sidebar = ({
     drawerWidth,
@@ -20,6 +21,30 @@ const Sidebar = ({
     useEffect(() => {
         setActive(pathname.substring(1))
     }, [pathname])
+
+    const navItems = [
+        {
+            text: "Dashboard",
+            icon: <HomeOutlined></HomeOutlined>
+        },
+        {
+            text: "Comments",
+            icon: <ReceiptOutlined></ReceiptOutlined>
+        },
+        {
+            text: "FootfallSales",
+            icon: <TrendingUpOutlined></TrendingUpOutlined>
+        },
+        {
+            text: "Predictions",
+            icon: <AutoFixHighOutlined></AutoFixHighOutlined>
+        },
+        {
+            text: "Admin",
+            icon: <ReceiptLongOutlined></ReceiptLongOutlined>
+        }
+
+    ]
   return (
     <Box component='nav'>
         {isSidebarOpen && (
@@ -55,8 +80,51 @@ const Sidebar = ({
                          sx={{objectFit: 'cover'}}
                          >
                     </Box>
+                    <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                        <ChevronLeft></ChevronLeft>
+                    </IconButton>
                 </FlexBetween>
             </Box>
+            <List>
+                {navItems.map(({text,icon}) => {
+                    if(!icon){
+                        return (
+                            <Typography key={text} sx={{m:'2ream 0 1rem 3rem'}}></Typography>
+                        )
+                    }
+                    const lcText = text.toLowerCase()
+                    return (
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton onClick={() => {
+                                navigate(`/${lcText}`)
+                            }}
+                            sx={{
+                                backgroundColor: active === lcText 
+                                    ? '#F0F0F0'
+                            : "transparent",
+                            color: active === lcText &&
+                            theme.palette.mode === 'dark' ? '#78A1BB': active !== lcText &&
+                            theme.palette.mode === 'dark' ? '#F0F0F0' : theme.palette.mode === 'light' ? '#78A1BB': active !== lcText &&
+                            theme.palette.mode === 'light' ? '#78A1BB' : '#22223b' 
+                            }}>
+                                <ListItemIcon
+                                    sx={{
+                                        ml:'2rem',
+                                        color:
+                                        active === lcText &&
+                            theme.palette.mode === 'dark' ? '#78A1BB': active !== lcText &&
+                            theme.palette.mode === 'dark' ? '#F0F0F0' : theme.palette.mode === 'light' ? '#78A1BB': active !== lcText &&
+                            theme.palette.mode === 'light' ? '#78A1BB' : '#22223b'
+                                    }}>{icon}</ListItemIcon>
+                                    <ListItemText primary={text}></ListItemText>
+                                    {active === lcText && (
+                                        <ChevronRightOutlined sx={{ml:"auto"}}></ChevronRightOutlined>
+                                    )}
+                            </ListItemButton>
+                        </ListItem>
+                    )
+                })}
+            </List>
 
         </Box>
 
