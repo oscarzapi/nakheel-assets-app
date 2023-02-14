@@ -32,7 +32,7 @@ const Sidebar = ({
             icon: <ReceiptOutlined></ReceiptOutlined>
         },
         {
-            text: "FootfallSales",
+            text: "SelfService",
             icon: <TrendingUpOutlined></TrendingUpOutlined>
         },
         {

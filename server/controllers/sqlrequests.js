@@ -22,13 +22,51 @@ const sqlConfig = {
     }
   }
 
+const getTcodes = () => {
+  var tcodes =[]
+
+        // get Tcodes 
+        var requestTcodes = new sql.Request();
+        var queryTcodes = 'select distinct tcode from YD_REGISTER_LOG'
+        // query to the database and get the records
+        requestTcodes.query(queryTcodes, function (err, result) {
+            
+          if (err) {console.log(err)}
+          result.recordset.map(record => tcodes.push(record.tcode.trim()))
+        });
+        return tcodes
+
+}
+
 
 export const getSqlRequests = async(req, res) => {
     try {
-        await sql.connect(sqlConfig)
-  const result = await sql.query`select * from YD_REGISTER_LOG`
-  console.dir(result)
-  res.status(200).send({result:result})
+      const {page = 1, pageSize = 20, sort = null, search = ""} = req.query
+      await sql.connect(sqlConfig, function (err) {
+        
+        // create Request object
+        var request = new sql.Request();
+        var query = 'select distinct * from YD_REGISTER_LOG'
+        // query to the database and get the records
+
+        const generateSort = () => {
+          const sortParsed = JSON.parse(sort)
+          const sortFormatted = {
+            [sortParsed.field]: (sortParsed.sort = 'asc' ? 1 : -1)
+          }
+          return sortFormatted
+        }
+        const sortFormatted = Boolean(sort) ? generateSort() : {}
+
+
+        request.query(query, function (err, recordset) {
+            
+            if (err) console.log(err)
+            const data = recordset.recordset
+            // send records as a response
+            res.status(200).send(data)
+        })
+    }); 
 
     } catch (error) {
         res.status(404).json({message:error.message})

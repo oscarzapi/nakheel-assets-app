@@ -6,14 +6,13 @@ export const api = createApi({
     tagTypes:['SqlRequest'],
     endpoints: (build) => ({
         getSqlRequests: build.query({
-            query: ({tenant}) => ({
+            query: ({page, pageSize, sort, search}) => ({
                 url: 'sql-requests',
-                method:'GET',
-                params: {tenant}
-            }),
-            providesTags: ['SqlRequest']
-        })
+                method: 'GET',
+                params:{page, pageSize, sort, search}}),
+            providesTags: ['SqlRequests']
     })
+})
 })
 
 export const {
