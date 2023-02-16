@@ -41,7 +41,8 @@ const getTcodes = () => {
 
 export const getSqlRequests = async(req, res) => {
     try {
-      const {page = 1, pageSize = 20, sort = null, search = ""} = req.query
+      const {page, pageSize, tcode} = req.query
+      console.log(page, pageSize)
       await sql.connect(sqlConfig, function (err) {
         
         // create Request object
@@ -49,22 +50,15 @@ export const getSqlRequests = async(req, res) => {
         var query = 'select distinct * from YD_REGISTER_LOG'
         // query to the database and get the records
 
-        const generateSort = () => {
-          const sortParsed = JSON.parse(sort)
-          const sortFormatted = {
-            [sortParsed.field]: (sortParsed.sort = 'asc' ? 1 : -1)
-          }
-          return sortFormatted
-        }
-        const sortFormatted = Boolean(sort) ? generateSort() : {}
-
-
         request.query(query, function (err, recordset) {
             
             if (err) console.log(err)
+            //const data = recordset.recordset.slice((page-1)*pageSize, (page)*pageSize)
             const data = recordset.recordset
+            const total = recordset.recordset.length
+            
             // send records as a response
-            res.status(200).send(data)
+            res.status(200).send({data, total})
         })
     }); 
 

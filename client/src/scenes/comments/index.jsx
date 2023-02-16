@@ -1,5 +1,5 @@
 import { Box, useTheme } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from 'components/Header'
 import { DataGrid, useGridApiContext, GridEventListener } from '@mui/x-data-grid'
 import { useGetSqlRequestsQuery } from 'state/api'
@@ -8,33 +8,35 @@ import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 
 const Comments = () => {
     const theme = useTheme()
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
     const [pageSize, setPageSize] = useState(20)
-    const [sort, setSort] = useState({})
-    const [search, setSearch] = useState('')
     const [tcode, setTcode] = useState('')
-    const [searchInput, setSearchInput] = useState('')
+
+ const handleCellClick = ({params}) => {
+  console.log('you clicked on the cell')
+  //setTcode(params.row.tcode)
+} 
 
     const {data, isLoading} = useGetSqlRequestsQuery({
-      page, pageSize, sort: JSON.stringify(sort), search
+      page, pageSize, tcode
     })
     const columnsToFilterBy = ['tcode', 'DocNo', 'TotalTranAmount', 'PaidAmount', 'Comment']
     const columns = []
-    const columnsAux = data && Object.keys(data[0]).filter(column => columnsToFilterBy.includes(column))
+    const columnsAux = data && Object.keys(data.data[0]).filter(column => columnsToFilterBy.includes(column))
     data && columnsAux.map(column => columns.push({field:column, headerName: column, flex:1}))
     console.log(data)
 
-     
-const handleCellClick = ({params}) => {
-  setTcode(params.row.tcode)
-}
+
+  
+  
+    
   return (
     <Box m='1.5rem 1.5rem'>
         <Header title="ADD COMMENTS TO TENANTS" subtitle="See your list of tenants"></Header>
         <Box
         mt='40px'
         height='80vh'
-        //width='90vh'
+        width='70vh'
         sx={{
             "& .MuiDataGrid-root": {
               border: "none",
@@ -59,28 +61,22 @@ const handleCellClick = ({params}) => {
             }
           }}
         >
-             { data && !isLoading ? (<DataGrid 
+              { data && !isLoading ? (<DataGrid 
             columns={columns}
-            rows={data}
+            rows={data.data}
             getRowId={row => row._id}
             loading={isLoading || !data}
             onCellClick={(params, event) => {handleCellClick({params, event})}}
             rowsPerPageOptions={[20,50,100]}
-            rowCount={(data &&data.length)||0}
+            rowCount={(data &&data.data.length)||0}
             pagination
+            components={{ Toolbar: DataGridCustomToolbar }}
             page={page}
             pageSize={pageSize}
-            //paginationMode='server'
-            //sortingMode='server'
-            onPageChange={newPage => setPage(newPage)}
+            paginationMode='server'
+            onPageChange={(newPage) => setPage(newPage)}
             onPageSizeChange={newPageSize => setPageSize(newPageSize)}
-            onSortModelChange={newSortModel => setSort(...newSortModel)}
-            components={{ Toolbar: DataGridCustomToolbar }}
-            componentsProps={{
-              toolbar: { searchInput, setSearchInput, setSearch },
-            }}
             ></DataGrid>  ) : (<>Loading...</>)}
-
         </Box>
     </Box>
   )
