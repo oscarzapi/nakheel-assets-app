@@ -3,9 +3,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 /* SQL SERVER SETUP */
-const PORT = parseInt(process.env.SERVER_PORT) || 9000
-
-
 const sqlConfig = {
     user: process.env.SQL_SERVER_USERNAME,
     password: process.env.SQL_SERVER_PASSWORD,
@@ -22,43 +19,34 @@ const sqlConfig = {
     }
   }
 
-const getTcodes = () => {
-  var tcodes =[]
-
-        // get Tcodes 
-        var requestTcodes = new sql.Request();
-        var queryTcodes = 'select distinct tcode from YD_REGISTER_LOG'
-        // query to the database and get the records
-        requestTcodes.query(queryTcodes, function (err, result) {
-            
-          if (err) {console.log(err)}
-          result.recordset.map(record => tcodes.push(record.tcode.trim()))
-        });
-        return tcodes
-
-}
 
 
 export const getSqlRequests = async(req, res) => {
     try {
       const {page, pageSize, tcode} = req.query
-      console.log(page, pageSize)
       await sql.connect(sqlConfig, function (err) {
         
         // create Request object
         var request = new sql.Request();
-        var query = 'select distinct * from YD_REGISTER_LOG'
+        var query = `select distinct * from YD_REGISTER_LOG where tcode like '%${tcode}%'`
         // query to the database and get the records
 
         request.query(query, function (err, recordset) {
             
             if (err) console.log(err)
-            //const data = recordset.recordset.slice((page-1)*pageSize, (page)*pageSize)
-            const data = recordset.recordset
-            const total = recordset.recordset.length
+            let data = recordset.recordset
+            if (tcode =='') data =[]
+            //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
+            console.log(data, page, pageSize, tcode)
+
+            const total = data.length
+            const columnsToFilterBy = ['tcode', 'DocNo', 'TotalTranAmount', 'PaidAmount', 'Comment']
+    const columns = []
+    //const columnsAux = Object.keys(data[0]).filter(column => columnsToFilterBy.includes(column))
+    columnsToFilterBy.map(column => columns.push({field:column, headerName: column, flex:1}))
             
             // send records as a response
-            res.status(200).send({data, total})
+            res.status(200).send({data, total, columns, tcode})
         })
     }); 
 
