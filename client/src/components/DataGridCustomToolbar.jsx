@@ -19,7 +19,6 @@ const DataGridCustomToolbar = ({ searchInput, setSearchInput, setSearch }) => {
           label="Search by tcode..."
           sx={{ mb: "0.5rem", width: "15rem" }}
           onChange={(e) => {
-            
             setSearchInput(e.target.value)
           }}
           value={searchInput}

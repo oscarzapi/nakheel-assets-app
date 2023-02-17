@@ -27,7 +27,7 @@ const Comments = () => {
         <Box
         mt='40px'
         height='80vh'
-        width='80vh'
+        //width='80vh'
         sx={{
             "& .MuiDataGrid-root": {
               border: "none",
