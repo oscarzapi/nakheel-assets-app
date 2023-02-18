@@ -35,6 +35,7 @@ export const getSqlRequests = async(req, res) => {
             
             if (err) console.log(err)
             let data = recordset.recordset
+            console.log(data)
             if (tcode =='') data =[]
             //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
             console.log(data, page, pageSize, tcode)

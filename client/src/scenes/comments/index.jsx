@@ -1,11 +1,10 @@
-import { Box, Button, IconButton, Popover, Snackbar, TextField, Typography, useTheme } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Box, IconButton, Popover, Snackbar, TextField, Typography, useTheme } from '@mui/material'
+import React, {  useState } from 'react'
 import Header from 'components/Header'
-import { DataGrid, useGridApiContext, GridEventListener, GridToolbar  } from '@mui/x-data-grid'
+import { DataGrid, } from '@mui/x-data-grid'
 import { useGetSqlRequestsQuery } from 'state/api'
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import CircularProgress from '@mui/material/CircularProgress';
-import CloseIcon from '@mui/icons-material/Close';
 import DirectionsIcon from '@mui/icons-material/Directions';
 
 const Comments = () => {
@@ -18,7 +17,6 @@ const Comments = () => {
     const [keyToUpdateComment, setKeyToUpdateComment] = useState({})
     const [anchorEl, setAnchorEl] = useState(null);
     const handleCellClick =({params, event}) => {
-      console.log(comment)
       setKeyToUpdateComment(params.row.tcode)
       setAnchorEl(event.currentTarget);
     }
@@ -31,6 +29,12 @@ const Comments = () => {
     const {data, isLoading} = useGetSqlRequestsQuery({
       page, pageSize, tcode:search
     })
+    
+    const handleClickComment = (e) => {
+      //setComment(e.target.value)
+      
+      console.log(comment, keyToUpdateComment)
+    }
   return (
     <Box m='1.5rem 1.5rem'>
         <Header title="ADD COMMENTS TO TENANTS" subtitle="See your list of tenants"></Header>
@@ -101,8 +105,14 @@ const Comments = () => {
           multiline
           rows={4}
           margin="normal"
+          onChange={e => setComment(e.target.value)}
         />
-        <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
+        <IconButton
+         color="primary"
+          sx={{ p: '10px' }}
+           aria-label="directions"
+           onClick={(e) => handleClickComment(e)}
+           >
         <DirectionsIcon />
       </IconButton>
           
