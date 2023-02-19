@@ -1,8 +1,10 @@
 import express from 'express'
-import {getSqlRequests} from '../controllers/sqlrequests.js'
+import {getSqlRequests, updateComments} from '../controllers/sqlrequests.js'
 
 
 const router = express.Router()
 router.get('/', getSqlRequests)
+router.get('/updated-comments', updateComments)
+
 
 export default router

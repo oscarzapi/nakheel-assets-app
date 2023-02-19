@@ -2,7 +2,7 @@ import { Box, IconButton, Popover, Snackbar, TextField, Typography, useTheme } f
 import React, {  useState } from 'react'
 import Header from 'components/Header'
 import { DataGrid, } from '@mui/x-data-grid'
-import { useGetSqlRequestsQuery } from 'state/api'
+import { useGetSqlRequestsQuery, useUpdateCommentsQuery } from 'state/api'
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import CircularProgress from '@mui/material/CircularProgress';
 import DirectionsIcon from '@mui/icons-material/Directions';
@@ -30,10 +30,9 @@ const Comments = () => {
       page, pageSize, tcode:search
     })
     
-    const handleClickComment = (e) => {
+    const HandleClickComment = () => {
       //setComment(e.target.value)
-      
-      console.log(comment, keyToUpdateComment)
+      useUpdateCommentsQuery({keyToUpdateComment, comment})
     }
   return (
     <Box m='1.5rem 1.5rem'>
@@ -111,7 +110,7 @@ const Comments = () => {
          color="primary"
           sx={{ p: '10px' }}
            aria-label="directions"
-           onClick={(e) => handleClickComment(e)}
+           onClick={(e) => HandleClickComment(e)}
            >
         <DirectionsIcon />
       </IconButton>

@@ -55,3 +55,44 @@ export const getSqlRequests = async(req, res) => {
         res.status(404).json({message:error.message})
     }
 } 
+
+
+export const updateComments = async(req, res) => {
+  try {
+
+    
+  } catch (error) {
+    
+  } try {
+      const {keyToUpdateComment, comment} = req.query
+      await sql.connect(sqlConfig, function (err) {
+        
+        // create Request object
+        var request = new sql.Request();
+        var query = `update YD_REGISTER_LOG set comment = '${comment}' where tcode like '%${keyToUpdateComment}%'`
+        // query to the database and get the records
+
+        request.query(query, function (err, recordset) {
+            
+            if (err) console.log(err)
+            let data = recordset.recordset
+            console.log(data)
+            if (tcode =='') data =[]
+            //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
+            console.log(data, page, pageSize, tcode)
+
+            const total = data.length
+            const columnsToFilterBy = ['tcode', 'DocNo', 'TotalTranAmount', 'PaidAmount', 'Comment']
+    const columns = []
+    //const columnsAux = Object.keys(data[0]).filter(column => columnsToFilterBy.includes(column))
+    columnsToFilterBy.map(column => columns.push({field:column, headerName: column, flex:1}))
+            
+            // send records as a response
+            res.status(200).send({data, total, columns, tcode})
+        })
+    }); 
+
+    } catch (error) {
+        res.status(404).json({message:error.message})
+    }
+}
