@@ -2,7 +2,7 @@ import { Box, IconButton, Popover, Snackbar, TextField, Typography, useTheme } f
 import React, {  useState } from 'react'
 import Header from 'components/Header'
 import { DataGrid, } from '@mui/x-data-grid'
-import { useGetSqlRequestsQuery, useUpdateCommentsQuery } from 'state/api'
+import { useGetSqlRequestsQuery, useLazyUpdateCommentsQuery } from 'state/api'
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import CircularProgress from '@mui/material/CircularProgress';
 import DirectionsIcon from '@mui/icons-material/Directions';
@@ -29,10 +29,13 @@ const Comments = () => {
     const {data, isLoading} = useGetSqlRequestsQuery({
       page, pageSize, tcode:search
     })
+    const [trigger] = useLazyUpdateCommentsQuery()
     
-    const HandleClickComment = () => {
+
+    
+    const HandleClickComment = async () => {
       //setComment(e.target.value)
-      useUpdateCommentsQuery({keyToUpdateComment, comment})
+      trigger({keyToUpdateComment, comment})
     }
   return (
     <Box m='1.5rem 1.5rem'>

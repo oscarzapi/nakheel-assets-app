@@ -14,7 +14,7 @@ export const api = createApi({
     }),
     updateComments: build.query({
         query: ({keyToUpdateComment, comment}) => ({
-            url: 'sql-requests/update-comment',
+            url: 'sql-requests/updated-comments',
             method: 'GET',
             params:{keyToUpdateComment, comment}}),
         providesTags: ['UpdateComments']
@@ -23,5 +23,5 @@ export const api = createApi({
 })
 
 export const {
-    useGetSqlRequestsQuery, useUpdateCommentsQuery
+    useGetSqlRequestsQuery, useLazyUpdateCommentsQuery, useLazyGetSqlRequestsQuery
 } = api
