@@ -4,8 +4,8 @@ import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
-import profileImage from '../../src/assets/nakheel-removebg.png'
-import { AutoFixHigh, AutoFixHighOutlined, ChevronLeft, ChevronRightOutlined, HomeOutlined, ReceiptLongOutlined, ReceiptOutlined, TrendingUpOutlined } from '@mui/icons-material'
+import profileImage from '../../src/assets/Nakheel.png'
+import { AutoFixHigh, AutoFixHighOutlined, BorderAllRounded, ChevronLeft, ChevronRightOutlined, HomeOutlined, ReceiptLongOutlined, ReceiptOutlined, TrendingUpOutlined } from '@mui/icons-material'
 
 const Sidebar = ({
     drawerWidth,
@@ -16,7 +16,6 @@ const Sidebar = ({
     const {pathname} = useLocation()
     const [active, setActive] = useState('')
     const navigate = useNavigate()
-    const theme = useTheme()
 
     useEffect(() => {
         setActive(pathname.substring(1))
@@ -56,8 +55,8 @@ const Sidebar = ({
         sx={{
             width:drawerWidth,
             "& .MuiDrawer-paper": {
-                color: theme.palette.primary[100],
-                backgroundColor: theme.palette.background.alt,
+                color:"#03293C",
+                backgroundColor: "white",
                 boxSizing: 'border-box',
                 borderWidth: isNonMobile ? 0 : '2px',
                 width: drawerWidth
@@ -76,7 +75,6 @@ const Sidebar = ({
                          src={profileImage}
                          height='100%'
                          width='100%'
-                         borderRadius='10%'
                          sx={{objectFit: 'cover'}}
                          >
                     </Box>
@@ -100,21 +98,15 @@ const Sidebar = ({
                             }}
                             sx={{
                                 backgroundColor: active === lcText 
-                                    ? '#F0F0F0'
+                                    ? "#F5F1E8"
                             : "transparent",
-                            color: active === lcText &&
-                            theme.palette.mode === 'dark' ? '#78A1BB': active !== lcText &&
-                            theme.palette.mode === 'dark' ? '#F0F0F0' : theme.palette.mode === 'light' ? '#78A1BB': active !== lcText &&
-                            theme.palette.mode === 'light' ? '#78A1BB' : '#22223b' 
+                            color: active === lcText ? "#03293C" : "#808B90",
+                            borderRadius:'0px 10px 10px 0px!important'
                             }}>
                                 <ListItemIcon
                                     sx={{
                                         ml:'2rem',
-                                        color:
-                                        active === lcText &&
-                            theme.palette.mode === 'dark' ? '#78A1BB': active !== lcText &&
-                            theme.palette.mode === 'dark' ? '#F0F0F0' : theme.palette.mode === 'light' ? '#78A1BB': active !== lcText &&
-                            theme.palette.mode === 'light' ? '#78A1BB' : '#22223b'
+                                        color: active === lcText ? "#03293C" : "#808B90"
                                     }}>{icon}</ListItemIcon>
                                     <ListItemText primary={text}></ListItemText>
                                     {active === lcText && (

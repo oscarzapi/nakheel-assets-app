@@ -4,31 +4,27 @@ import FlexBetween from './FlexBetween'
 import { useDispatch } from 'react-redux'
 import { setMode } from 'state'
 import { Box } from '@mui/system'
-import profileImage from 'assets/nakheel-removebg.png'
+import profileImage from 'assets/Nakheel.png'
 import { AppBar, IconButton, InputBase, Toolbar, useTheme } from '@mui/material'
 
 const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
     const dispatch = useDispatch()
-    const theme = useTheme()
-
-    
-
-
 
   return (
     <AppBar sx={{
         position: "static",
         background: "none",
-        boxShadow: "none"
+        boxShadow: "none",
+        color:"#03293C"
     }}
     >
-        <Toolbar sx={{justifyContent: "space-between"}}>
+        <Toolbar sx={{justifyContent: "space-between", margin:'1.2rem'}}>
             {/* LEFT SIDE*/}
-            <FlexBetween color='white'>
-                <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+            <FlexBetween >
+                <IconButton sx={{color:"#03293C"}} onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
                     <MenuIcon></MenuIcon>
                 </IconButton>
-                <FlexBetween backgroundColor={theme.palette.background.alt}
+                <FlexBetween color="#03293C"
                  borderRadius='9px' gap='3rem' p='0.1rem 1.5rem'>
                     <InputBase placeholder='Search...'></InputBase>
                     <IconButton></IconButton>
@@ -44,14 +40,13 @@ const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
                        component='img'
                         alt='profile'
                          src={profileImage}
-                         height='30px'
+                         //height='30px'
                          width='50px'
-                         borderRadius='10%'
                          sx={{objectFit: 'cover'}}
                          >
                     </Box>
             </IconButton>
-            <IconButton>
+            <IconButton sx={{color:"#03293C"}}>
                 <SettingsOutlined></SettingsOutlined>
             </IconButton>
         </FlexBetween>

@@ -2,15 +2,15 @@
 export const tokensDark = {
   primary: {
     // blue
-    100: "#e7e7e6",
-    200: "#F4F1EC",
-    300: "#f5f1e9",
-    400: "#A3ACAC",
-    500: "#6a8597",
-    600: "#3e556b",
-    700: "#949193",
-    800: "#636669",
-    900: "#10161d",
+    100: "#FFFFFF",
+    200: "#F5F1E8",
+    300: "#F4F1EA",
+    400: "#D7D9D9",
+    500: "#9FA9AF",
+    600: "#B4BABD",
+    700: "#808B90",
+    800: "#17394C",
+    900: "#03293C",
   }
 };
 
@@ -32,17 +32,16 @@ function reverseTokens(tokensDark) {
 export const tokensLight = reverseTokens(tokensDark);
 
 // mui theme settings
-export const themeSettings = (mode) => {
+export const themeSettings = () => {
   return {
     palette: {
-      mode: mode,
             // palette values for dark mode
       primary: {
               main: tokensDark.primary[400],
               light: tokensDark.primary[200],
             },
       background: {
-              default: tokensDark.primary[600],
+              default: tokensDark.primary[200],
               alt: tokensDark.primary[500],
             
         
