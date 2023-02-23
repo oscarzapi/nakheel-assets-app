@@ -71,7 +71,7 @@ const Comments = () => {
               { data && !isLoading ? (<><DataGrid 
             columns={data.columns}
             rows={data.data}
-            getRowId={row => row._id}
+            getRowId={row => row.DocNo}
             loading={isLoading || !data}
             onCellClick={(params,event) => handleCellClick({params,event})}
             rowsPerPageOptions={[20,50,100]}
