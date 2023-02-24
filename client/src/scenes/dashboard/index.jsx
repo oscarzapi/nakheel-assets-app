@@ -1,5 +1,6 @@
 import { DownloadOutlined, AttachMoney } from '@mui/icons-material'
 import { Box, Button, useMediaQuery } from '@mui/material'
+import DateFilters from 'components/DateFilters'
 import FlexBetween from 'components/FlexBetween'
 import Header from 'components/Header'
 import StatBox from 'components/StatBox'
@@ -7,6 +8,7 @@ import React from 'react'
 
 const Dashboard = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  
   return (
     <Box m='2rem 2rem'>
       <FlexBetween >
@@ -28,6 +30,7 @@ const Dashboard = () => {
           </Button>
         </Box>
       </FlexBetween>
+      <DateFilters></DateFilters>
       <Box mt="20px"
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -49,39 +52,7 @@ const Dashboard = () => {
             />
           }
         />
-        <StatBox
-          title="Total Sales"
-          value={20}
-          increase="+14%"
-          description="Since last month"
-          icon={
-            <AttachMoney
-            sx={{ fontSize: "36px" }}
-            />
-          }
-        />
-        <StatBox
-          title="Total Sales"
-          value={20}
-          increase="+14%"
-          description="Since last month"
-          icon={
-            <AttachMoney
-              sx={{ fontSize: "36px" }}
-            />
-          }
-        />
-        <StatBox
-          title="Total Sales"
-          value={20}
-          increase="+14%"
-          description="Since last month"
-          icon={
-            <AttachMoney
-            sx={{ fontSize: "36px" }}
-            />
-          }
-        />
+        
 
       </Box>
 
