@@ -1,18 +1,17 @@
-import React, { useState,Suspense, useEffect } from 'react'
+import React, { useState,Suspense } from 'react'
 import {Box, useMediaQuery} from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
 import Navbar from "../../components/Navbar"
 import Sidebar from '../../components/Sidebar'
 import { useIsAuthenticated } from '@azure/msal-react'
 import SignIn from 'scenes/signin'
-import { loginSuccess } from 'state'
 
 const Layout = () => {
   const isAuthenticated = useIsAuthenticated();
   const isNonMobile = useMediaQuery("(min-width:600px)")
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const dispatch = useDispatch()
+  //const dispatch = useDispatch()
   const userName = useSelector(state => state.global.userName.split(' ')[0])
   
   /* useEffect(() => {

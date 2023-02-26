@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { Component } from 'react';  
+import React from 'react';  
 import Tableau from "tableau-react";
 
 const SelfService = () => { 

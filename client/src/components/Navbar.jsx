@@ -1,7 +1,6 @@
 import React from 'react'
 import { Menu as MenuIcon, ArrowDropDownOutlined, DownloadOutlined } from '@mui/icons-material'
 import FlexBetween from './FlexBetween'
-import { useDispatch } from 'react-redux'
 import { Box } from '@mui/system'
 import profileImage from 'assets/Nakheel.png'
 import { AppBar, Button, IconButton, InputBase, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
@@ -9,26 +8,45 @@ import { useIsAuthenticated } from '@azure/msal-react'
 import { SignOutButton } from './SignOutButton'
 import { SignInButton } from './SignInButton'
 import { useState } from 'react'
+//import domtoimage from 'dom-to-image';
+import * as htmlToImage from "html-to-image";
 
 const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch()
     const isAuthenticated = useIsAuthenticated();
     const [anchorEl, setAnchorEl] = useState(null)
     const isOpen = Boolean(anchorEl);
     const handleClick = event => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null);
-    const data = [{exampleData:1}]
+    //const data = [{exampleData:1}]
 
 
-    const handleDownload = () => {
+
+    const handleDownload = async () => {
+      var node = document.getElementById('root')
+      //let node2 = useRef(null)
+      await htmlToImage.toJpeg(node)
+      //domtoimage.toPng(node)
+        .then(function (dataUrl) {
+        var img = new Image();
+        console.log(dataUrl)
+        img.src = dataUrl;
+        document.body.appendChild(img);
+        window.open(`mailto:?subject=sales_${new Date().toISOString().split('T')[0]}&body=${<img alt='report' src={dataUrl.toString()} />}`)
+      })
+      .catch(function (error) {
+        console.error("oops, something wents wrong!", error);
+      });
+/*
       const dataUri = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data))}`;
       const exportFileDefaultName = "download.csv"
       const linkElement = document.createElement('a');
       linkElement.setAttribute('href', dataUri);
       linkElement.setAttribute('download', exportFileDefaultName);
-      linkElement.click();
+      linkElement.click(); */
     }
   
+
 
   return (
     <AppBar sx={{

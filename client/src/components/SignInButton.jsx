@@ -2,7 +2,6 @@ import React from "react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../authConfig";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 
 /**

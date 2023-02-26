@@ -1,11 +1,10 @@
-import { useTheme } from '@emotion/react'
 import { Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import profileImage from '../../src/assets/Nakheel.png'
-import { AutoFixHigh, AutoFixHighOutlined, BorderAllRounded, ChevronLeft, ChevronRightOutlined, HomeOutlined, ReceiptLongOutlined, ReceiptOutlined, TrendingUpOutlined } from '@mui/icons-material'
+import {AutoFixHighOutlined, ChevronLeft, ChevronRightOutlined, HomeOutlined, ReceiptLongOutlined, ReceiptOutlined, TrendingUpOutlined } from '@mui/icons-material'
 
 const Sidebar = ({
     drawerWidth,

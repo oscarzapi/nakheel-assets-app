@@ -1,23 +1,22 @@
 import { useIsAuthenticated } from '@azure/msal-react'
-import { DownloadOutlined, AttachMoney, HandymanOutlined } from '@mui/icons-material'
-import { Box, Button, useMediaQuery } from '@mui/material'
+import { AttachMoney } from '@mui/icons-material'
+import { Box, useMediaQuery } from '@mui/material'
 import DateFilters from 'components/DateFilters'
 import FlexBetween from 'components/FlexBetween'
 import Header from 'components/Header'
 import StatBox from 'components/StatBox'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import SignIn from 'scenes/signin'
 
 const Dashboard = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const isAuthenticated = useIsAuthenticated();
-  const userName = useSelector((state) => state.global.userName)
+  //const userName = useSelector((state) => state.global.userName)
 
 
 
   return (
-    <Box m='2rem 2rem'>
+    <Box m='2rem 2rem' id='Report'>
       {isAuthenticated ? (
         <Box>
       <FlexBetween >
@@ -49,7 +48,6 @@ const Dashboard = () => {
           }
         />
         
-
       </Box>
       </Box>
       ) : (<SignIn /> )}

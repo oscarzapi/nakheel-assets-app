@@ -1,8 +1,8 @@
-import { Box, IconButton, Popover, Snackbar, TextField, Typography, useTheme } from '@mui/material'
+import { Box, IconButton, Popover, TextField, Typography } from '@mui/material'
 import React, {  useState } from 'react'
 import Header from 'components/Header'
 import { DataGrid, } from '@mui/x-data-grid'
-import { useGetSqlRequestsQuery, useLazyGetSqlRequestsQuery, useLazyUpdateCommentsQuery } from 'state/api'
+import { useGetSqlRequestsQuery, useLazyUpdateCommentsQuery } from 'state/api'
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import CircularProgress from '@mui/material/CircularProgress';
 import DirectionsIcon from '@mui/icons-material/Directions';
