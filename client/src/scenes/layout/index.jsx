@@ -1,16 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState,Suspense, useEffect } from 'react'
 import {Box, useMediaQuery} from '@mui/material'
 import { Outlet } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Navbar from "../../components/Navbar"
 import Sidebar from '../../components/Sidebar'
+import { useIsAuthenticated } from '@azure/msal-react'
+import SignIn from 'scenes/signin'
+import { loginSuccess } from 'state'
 
 const Layout = () => {
+  const isAuthenticated = useIsAuthenticated();
   const isNonMobile = useMediaQuery("(min-width:600px)")
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const dispatch = useDispatch()
+  const userName = useSelector(state => state.global.userName.split(' ')[0])
+  
+  /* useEffect(() => {
+    const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(1)))
+    dispatch(loginSuccess(userData['name']))
+  },[]) */
+
 
   return (
-<Box display={isNonMobile ? 'flex': 'block'} width='100%' height='100%' justifyContent='center' m='1.5rem' >      <Sidebar
+<Box display={isNonMobile ? 'flex': 'block'} width='100%' height='100%' justifyContent='center' m='1.5rem' > 
+  {isAuthenticated ? (
+        <Box>
+
+     <Sidebar
       isNonMobile={isNonMobile}
       drawerWidth='250px'
       isSidebarOpen={isSidebarOpen}
@@ -18,9 +34,16 @@ const Layout = () => {
       ></Sidebar>
       <Box flexGrow={1}>
         <Navbar isSidebarOpen={isSidebarOpen}
-      setIsSidebarOpen={setIsSidebarOpen}></Navbar>
-        <Outlet></Outlet>
-      </Box>
+      setIsSidebarOpen={setIsSidebarOpen}
+      userName={userName}></Navbar>
+        <Suspense fallback={<h1>Loading...</h1>}>
+      <Outlet></Outlet>
+      </Suspense>
+      </Box></Box>
+      ) : 
+      (
+        <SignIn></SignIn>
+        )}
     </Box>
   )
 }

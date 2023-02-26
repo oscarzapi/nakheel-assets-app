@@ -1,14 +1,34 @@
 import React from 'react'
-import { LightModeOutlined, DarkModeOutlined, Menu as MenuIcon, Search, SettingsOutlined, ArrowDropDownOutlined, Image, HomeOutlined, ReceiptOutlined, TrendingUpOutlined } from '@mui/icons-material'
+import { Menu as MenuIcon, ArrowDropDownOutlined, DownloadOutlined } from '@mui/icons-material'
 import FlexBetween from './FlexBetween'
 import { useDispatch } from 'react-redux'
-import { setMode } from 'state'
 import { Box } from '@mui/system'
 import profileImage from 'assets/Nakheel.png'
-import { AppBar, IconButton, InputBase, Toolbar, useTheme } from '@mui/material'
+import { AppBar, Button, IconButton, InputBase, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import { useIsAuthenticated } from '@azure/msal-react'
+import { SignOutButton } from './SignOutButton'
+import { SignInButton } from './SignInButton'
+import { useState } from 'react'
 
 const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
     const dispatch = useDispatch()
+    const isAuthenticated = useIsAuthenticated();
+    const [anchorEl, setAnchorEl] = useState(null)
+    const isOpen = Boolean(anchorEl);
+    const handleClick = event => setAnchorEl(event.currentTarget)
+    const handleClose = () => setAnchorEl(null);
+    const data = [{exampleData:1}]
+
+
+    const handleDownload = () => {
+      const dataUri = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data))}`;
+      const exportFileDefaultName = "download.csv"
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+    }
+  
 
   return (
     <AppBar sx={{
@@ -32,9 +52,11 @@ const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
             </FlexBetween>
             {/* RIGHT SIDE*/}
         <FlexBetween gap='1.5rem'>
-            <IconButton onClick={() => console.log('take me to Nakheel Website')}>
+            <IconButton onClick={handleClick}>
+                <Box sx={{flexDirection:'row'}}>
             <Box 
                     display='flex'
+                    flexDirection='row'
                      alignItems='center'
                       gap="0.5rem"
                        component='img'
@@ -45,11 +67,44 @@ const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
                          sx={{objectFit: 'cover'}}
                          >
                     </Box>
+                    <Typography
+                  fontSize="0.75rem"
+                  
+                >
+                  {userName}
+                  </Typography>
+              </Box>
+              <ArrowDropDownOutlined
+                sx={{  fontSize: "25px" }}
+              />
             </IconButton>
-            <IconButton sx={{color:"#03293C"}}>
-                <SettingsOutlined></SettingsOutlined>
-            </IconButton>
+            
+            <Menu
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              anchorEl={anchorEl}
+              open={isOpen}
+              onClose={handleClose}
+            >
+<MenuItem >
+{ isAuthenticated ? <SignOutButton /> : <SignInButton /> }
+</MenuItem>
+            </Menu>
         </FlexBetween>
+        <Box>
+          <Button
+          onClick={handleDownload}
+            sx={{
+              //backgroundColor: theme.palette.secondary.light,
+              variant:"outlined",
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+              color: "#03293C"
+            }}
+          >
+            <DownloadOutlined sx={{ mr: "10px" }} />
+          </Button>
+        </Box>
         </Toolbar>
     </AppBar>
   )

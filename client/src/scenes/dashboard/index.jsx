@@ -1,34 +1,30 @@
-import { DownloadOutlined, AttachMoney } from '@mui/icons-material'
+import { useIsAuthenticated } from '@azure/msal-react'
+import { DownloadOutlined, AttachMoney, HandymanOutlined } from '@mui/icons-material'
 import { Box, Button, useMediaQuery } from '@mui/material'
 import DateFilters from 'components/DateFilters'
 import FlexBetween from 'components/FlexBetween'
 import Header from 'components/Header'
 import StatBox from 'components/StatBox'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import SignIn from 'scenes/signin'
 
 const Dashboard = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  
+  const isAuthenticated = useIsAuthenticated();
+  const userName = useSelector((state) => state.global.userName)
+
+
+
   return (
     <Box m='2rem 2rem'>
+      {isAuthenticated ? (
+        <Box>
       <FlexBetween >
+        
         <Header title='Overview' subtitle=''>
         </Header>
-        <Box>
-          <Button
-            sx={{
-              //backgroundColor: theme.palette.secondary.light,
-              variant:"outlined",
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-              color: "#03293C"
-            }}
-          >
-            <DownloadOutlined sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
+        
       </FlexBetween>
       <DateFilters></DateFilters>
       <Box mt="20px"
@@ -55,7 +51,8 @@ const Dashboard = () => {
         
 
       </Box>
-
+      </Box>
+      ) : (<SignIn /> )}
     </Box>
   )
 }
