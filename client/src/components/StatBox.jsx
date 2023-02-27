@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import FlexBetween from "./FlexBetween";
+import LineChart from "./LineChart";
 
 const StatBox = ({ title, value, increase, icon, description }) => {
-  const theme = useTheme();
   return (
     <Box
-      gridColumn="span 2"
+      gridColumn="span 12"
       gridRow="span 1"
       display="flex"
       flexDirection="column"
@@ -16,30 +16,19 @@ const StatBox = ({ title, value, increase, icon, description }) => {
       boxShadow="1px 3px 5px 1px #9E9E9E"
       backgroundColor='#F5F1E8'
       borderRadius="0.55rem"
+      height='500px'
+      color="#03293C"
     >
       <FlexBetween>
-        <Typography variant="h6" sx={{ color: theme.palette.secondary[100] }}>
+        <Typography variant="h6" sx={{ color: "#03293C" }}>
           {title}
         </Typography>
-        {icon}
-      </FlexBetween>
-
-      <Typography
-        variant="h3"
-        fontWeight="600"
-        sx={{ color: theme.palette.secondary[200] }}
-      >
-        {value}
-      </Typography>
-      <FlexBetween gap="1rem">
-        <Typography
-          variant="h5"
-          fontStyle="italic"
-          sx={{ color: theme.palette.secondary.light }}
-        >
-          {increase}
-        </Typography>
         <Typography>{description}</Typography>
+      </FlexBetween>
+      <LineChart></LineChart>
+      <FlexBetween gap="1rem">
+      {icon}
+      <Typography variant="h6">Overall: {increase}</Typography>
       </FlexBetween>
     </Box>
   );

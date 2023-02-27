@@ -1,8 +1,7 @@
-const { useTheme, Typography , Box} = require("@mui/material")
+const { Typography , Box} = require("@mui/material")
 
 
-const Header = ({title, subtitle}) => {
-    const theme = useTheme()
+const Header = ({title}) => {
     return (
         <Box>
             <Typography
@@ -12,9 +11,6 @@ const Header = ({title, subtitle}) => {
             sx={{ mb: "5px" }}>
 {title}
             </Typography>
-            <Typography variant="h7" color={theme.palette.primary[50]}>
-        {subtitle}
-      </Typography>
         </Box>
     )
 }

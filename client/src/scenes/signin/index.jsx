@@ -19,7 +19,8 @@ const SignIn = () => {
             instance.loginPopup(loginRequest).catch(e => {
                 console.log(e);
             }).then(() => {
-              const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(1)))
+              const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(2)))
+              console.log(userData)
               dispatch(loginSuccess(userData['name']))
             });
         }

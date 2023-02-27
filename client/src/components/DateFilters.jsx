@@ -25,6 +25,7 @@ const DateFilters = () => {
   exclusive
   onChange={handleChange}
 >
+  <ToggleButton value="daily">daily</ToggleButton>
   <ToggleButton value="weekly">weekly</ToggleButton>
   <ToggleButton value="monthly">monthly</ToggleButton>
   <ToggleButton value="yearly">yearly</ToggleButton>

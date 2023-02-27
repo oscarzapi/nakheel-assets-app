@@ -11,6 +11,8 @@ import { useState } from 'react'
 //import domtoimage from 'dom-to-image';
 import * as htmlToImage from "html-to-image";
 
+const todaysDate = new Date().toISOString().split('T')[0]
+
 const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
     //const dispatch = useDispatch()
     const isAuthenticated = useIsAuthenticated();
@@ -25,14 +27,19 @@ const Navbar = ({userData, userName, isSidebarOpen, setIsSidebarOpen}) => {
     const handleDownload = async () => {
       var node = document.getElementById('root')
       //let node2 = useRef(null)
-      await htmlToImage.toJpeg(node)
+      await htmlToImage.toPng(node)
       //domtoimage.toPng(node)
         .then(function (dataUrl) {
         var img = new Image();
         console.log(dataUrl)
         img.src = dataUrl;
-        document.body.appendChild(img);
-        window.open(`mailto:?subject=sales_${new Date().toISOString().split('T')[0]}&body=${<img alt='report' src={dataUrl.toString()} />}`)
+        //document.body.appendChild(img);
+        const exportFileDefaultName = `sales_${todaysDate}.png`
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUrl);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click()
+        window.open(`mailto:?subject=sales_${todaysDate}&body=${<img alt='report' src={dataUrl} height='100px' width='200px'/>}`)
       })
       .catch(function (error) {
         console.error("oops, something wents wrong!", error);

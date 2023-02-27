@@ -21,7 +21,7 @@ const Layout = () => {
 
 
   return (
-<Box display={isNonMobile ? 'flex': 'block'} width='100%' height='100%' justifyContent='center' m='1.5rem' > 
+<Box width='100%' height='100%' justifyContent='center' > 
   {isAuthenticated ? (
         <Box>
 
