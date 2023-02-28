@@ -12,16 +12,16 @@ import FlexBetween from 'components/FlexBetween';
 const SignIn = () => {
   const { instance } = useMsal();
   const dispatch = useDispatch()
-  //const [userName, setUserName] = useState('')
-
+  
     const handleLogin = (loginType) => {
         if (loginType === "popup") {
             instance.loginPopup(loginRequest).catch(e => {
                 console.log(e);
             }).then(() => {
               const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(2)))
-              console.log(userData)
-              dispatch(loginSuccess(userData['name']))
+              const userName = userData['name'].split(" ").slice(0,2).join(' ')
+              window.localStorage.setItem('USERNAME_STATE', JSON.stringify(userName));
+              dispatch(loginSuccess(userName))
             });
         }
         
@@ -29,7 +29,7 @@ const SignIn = () => {
         //navigate('/dashboard')
     }
   return (
-    <Box >
+    <Box>
     <FlexBetween>
     <List >
       <ListItem>
