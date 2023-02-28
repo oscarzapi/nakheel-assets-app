@@ -1,9 +1,9 @@
 import React from "react";
 import {
   Menu as MenuIcon,
-  ArrowDropDownOutlined,
-  DownloadOutlined,
+  ArrowDropDownOutlined
 } from "@mui/icons-material";
+import EmailIcon from '@mui/icons-material/Email';
 import FlexBetween from "./FlexBetween";
 import { Box } from "@mui/system";
 import profileImage from "assets/Nakheel.png";
@@ -11,9 +11,10 @@ import {
   AppBar,
   Button,
   IconButton,
-  InputBase,
+  InputAdornment,
   Menu,
   MenuItem,
+  TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -23,6 +24,7 @@ import { SignInButton } from "./SignInButton";
 import { useState } from "react";
 //import domtoimage from 'dom-to-image';
 import * as htmlToImage from "html-to-image";
+import SearchIcon from "@mui/icons-material/Search";
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
@@ -35,7 +37,7 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
   const handleClose = () => setAnchorEl(null);
   //const data = [{exampleData:1}]
 
-  const handleDownload = async () => {
+  const handleSendEmail = async () => {
     var node = document.getElementById("root");
     //let node2 = useRef(null)
     await htmlToImage
@@ -86,25 +88,29 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
           >
             <MenuIcon></MenuIcon>
           </IconButton>
-          <FlexBetween
-            color="#03293C"
-            borderRadius="9px"
-            gap="3rem"
-            p="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Search..."></InputBase>
-            <IconButton></IconButton>
-          </FlexBetween>
+          <TextField
+          sx={{marginLeft:'1rem'}}
+            label="Filter..."
+            variant="standard"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
         </FlexBetween>
         {/* RIGHT SIDE*/}
-        <FlexBetween gap="1.5rem">
+        <FlexBetween sx={{marginLeft: 'inherit'}}>
           <IconButton onClick={handleClick}>
             <Box sx={{ flexDirection: "row" }}>
               <Box
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
-                gap="0.5rem"
                 component="img"
                 alt="profile"
                 src={profileImage}
@@ -112,7 +118,9 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
                 width="80px"
                 sx={{ objectFit: "cover" }}
               ></Box>
-              <Typography fontSize="0.75rem" mt='5px'>{userName}</Typography>
+              <Typography fontSize="0.75rem" mt="5px">
+                {userName}
+              </Typography>
             </Box>
             <ArrowDropDownOutlined sx={{ fontSize: "25px" }} />
           </IconButton>
@@ -127,22 +135,22 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
               {isAuthenticated ? <SignOutButton /> : <SignInButton />}
             </MenuItem>
           </Menu>
-        </FlexBetween>
-        <Box>
+          <Box>
           <Button
-            onClick={handleDownload}
+            onClick={handleSendEmail}
             sx={{
               //backgroundColor: theme.palette.secondary.light,
               variant: "outlined",
               fontSize: "14px",
               fontWeight: "bold",
-              padding: "10px 20px",
               color: "#03293C",
             }}
           >
-            <DownloadOutlined sx={{ mr: "10px" }} />
+            <EmailIcon />
           </Button>
         </Box>
+        </FlexBetween>
+        
       </Toolbar>
     </AppBar>
   );

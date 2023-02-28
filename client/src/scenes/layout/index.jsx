@@ -6,7 +6,7 @@ import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { useIsAuthenticated } from "@azure/msal-react";
 import SignIn from "scenes/signin";
-
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Layout = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -14,15 +14,16 @@ const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   //const dispatch = useDispatch()
   const userName = useSelector((state) => state.global.userName);
-  const [userNameAux, setUserNameAux] = useState('');
+  const [userNameAux, setUserNameAux] = useState("");
 
   useEffect(() => {
-    const userFromLocalStorage = window.localStorage.getItem('USERNAME_STATE');
-    if ( userFromLocalStorage !== null ) setUserNameAux(JSON.parse(userFromLocalStorage));
+    const userFromLocalStorage = window.localStorage.getItem("USERNAME_STATE");
+    if (userFromLocalStorage !== null)
+      setUserNameAux(JSON.parse(userFromLocalStorage));
   }, [userName]);
 
   return (
-    <Box width="100%" height="100%" justifyContent="center" >
+    <Box width="100%" height="100%" justifyContent="center">
       {isAuthenticated ? (
         <Box>
           <Sidebar
@@ -37,7 +38,13 @@ const Layout = () => {
               setIsSidebarOpen={setIsSidebarOpen}
               userName={userNameAux}
             ></Navbar>
-            <Suspense fallback={<h1>Loading...</h1>}>
+            <Suspense
+              fallback={
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress />
+                </Box>
+              }
+            >
               <Outlet></Outlet>
             </Suspense>
           </Box>
