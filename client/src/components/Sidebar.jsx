@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import FlexBetween from './FlexBetween'
 import profileImage from '../../src/assets/Nakheel.png'
-import {AutoFixHighOutlined, ChevronLeft, ChevronRightOutlined, HomeOutlined, ReceiptLongOutlined, ReceiptOutlined, TrendingUpOutlined } from '@mui/icons-material'
+import { ChevronLeft, ChevronRightOutlined, HomeOutlined, ReceiptLongOutlined } from '@mui/icons-material'
 
 const Sidebar = ({
     drawerWidth,
@@ -22,7 +22,19 @@ const Sidebar = ({
 
     const navItems = [
         {
-            text: "Dashboard",
+            text: "Overall",
+            icon: <HomeOutlined></HomeOutlined>
+        },
+        {
+            text: "Assets",
+            icon: <HomeOutlined></HomeOutlined>
+        },
+        {
+            text: "Tenants",
+            icon: <HomeOutlined></HomeOutlined>
+        },
+        /* {
+            text: "Overall",
             icon: <HomeOutlined></HomeOutlined>
         },
         {
@@ -36,7 +48,7 @@ const Sidebar = ({
         {
             text: "Predictions",
             icon: <AutoFixHighOutlined></AutoFixHighOutlined>
-        },
+        }, */
         {
             text: "Admin",
             icon: <ReceiptLongOutlined></ReceiptLongOutlined>

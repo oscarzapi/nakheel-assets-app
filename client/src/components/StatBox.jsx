@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import FlexBetween from "./FlexBetween";
-import LineChart from "./LineChart";
 import {
   Top10Performers,
   Bottom10Performers,
@@ -11,7 +10,7 @@ import {
 import { useState } from "react";
 import { ArrowDropDownOutlined } from "@mui/icons-material";
 
-const StatBox = ({ title, value, increase, icon, description }) => {
+const StatBox = ({ title, value, change, chart}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClose = () => setAnchorEl(null);
@@ -58,10 +57,10 @@ const StatBox = ({ title, value, increase, icon, description }) => {
           </MenuItem>
         </Menu>
       </FlexBetween>
-      <LineChart></LineChart>
+      {chart}
       <FlexBetween gap="1rem">
-        {icon}
-        <Typography variant="h6">Overall: {increase}</Typography>
+      <Typography variant="h4" sx={{color: change > 0 ? 'green':'red'}}> {value}</Typography>
+        <Typography variant="h4" sx={{color: change > 0 ? 'green':'red'}}> {change}%</Typography>
       </FlexBetween>
     </Box>
   );

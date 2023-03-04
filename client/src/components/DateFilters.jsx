@@ -1,5 +1,5 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDateMode } from "state";
 const { styled } = require("@mui/system");
@@ -16,9 +16,9 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 const DateFilters = () => {
   const dispatch = useDispatch();
-  const dateModeGlobal = useSelector((state) => state.global.dateMode);
+/*   const dateModeGlobal = useSelector((state) => state.global.dateMode);
   const userName = useSelector((state) => state.global.userName);
-  const isLoggedIn = useSelector((state) => state.global.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.global.isLoggedIn); */
 
 
   const [dateFilter, setDateFilter] = useState("daily");
@@ -27,9 +27,9 @@ const DateFilters = () => {
     dispatch(setDateMode(newFilter))
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log('dateModeGlobal', dateModeGlobal)
-  }, [dateModeGlobal])
+  }, [dateModeGlobal]) */
 
   return (
     <>

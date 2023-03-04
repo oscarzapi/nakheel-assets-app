@@ -1,5 +1,4 @@
 import { useIsAuthenticated } from "@azure/msal-react";
-import { AttachMoney } from "@mui/icons-material";
 import { Box, useMediaQuery } from "@mui/material";
 import DateFilters from "components/DateFilters";
 import FlexBetween from "components/FlexBetween";
@@ -7,8 +6,9 @@ import Header from "components/Header";
 import StatBox from "components/StatBox";
 import React from "react";
 import SignIn from "scenes/signin";
+import LineChart from "../../components/LineChart";
 
-const Dashboard = () => {
+const Overall = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const isAuthenticated = useIsAuthenticated();
   //const userName = useSelector((state) => state.global.userName)
@@ -37,9 +37,8 @@ const Dashboard = () => {
             <StatBox
               title="Total Sales"
               value={20}
-              increase="+14%"
-              description="See TOP 5 Performers"
-              icon={<AttachMoney />}
+              change={14}
+              chart={<LineChart></LineChart>}
             ></StatBox>
           </Box>
         </Box>
@@ -50,4 +49,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Overall;
