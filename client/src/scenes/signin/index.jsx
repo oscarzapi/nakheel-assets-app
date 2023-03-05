@@ -1,28 +1,42 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {MicrosoftLoginButton} from 'react-social-login-buttons';
 import {  useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../authConfig";
 import { Box, List, ListItem } from '@mui/material';
 import profileImage from '../../assets/Nakheel.png'
-import { useDispatch } from 'react-redux';
-import { loginSuccess } from 'state';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginSuccess, getData } from 'state';
 import FlexBetween from 'components/FlexBetween';
+import { useLazyGetDataQuery } from 'state/api';
 
 
 const SignIn = () => {
   const { instance } = useMsal();
   const dispatch = useDispatch()
-  
+  const userEmail = useSelector((state) => state.global.userData.userEmail)
+
+  const [trigger, result] = useLazyGetDataQuery()
+  console.log({'userEmail':userEmail, 'result':result})
+
+  useEffect(() => {
+    trigger({userEmail})
+  }, [userEmail])
+
+
+
     const handleLogin = (loginType) => {
         if (loginType === "popup") {
             instance.loginPopup(loginRequest).catch(e => {
                 console.log(e);
             }).then(() => {
-              const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(2)))
+              const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(1)))
               const userName = userData['name'].split(" ").slice(0,2).join(' ')
+              const userEmail = userData['username']
+              const userDataObj = {userName, userEmail}
               window.localStorage.setItem('USERNAME_STATE', JSON.stringify(userName));
-              dispatch(loginSuccess(userName))
-            });
+              console.log(userDataObj)
+              dispatch(loginSuccess(userDataObj))
+            })
         }
         
         //setUserName(userData['name'])

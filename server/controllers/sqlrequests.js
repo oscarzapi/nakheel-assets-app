@@ -82,3 +82,32 @@ export const updateComments = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+
+export const getData = async (req, res) => {
+  try {
+    const { email } = req.query;
+    await sql.connect(sqlConfig, function (err) {
+      // create Request object
+      var request = new sql.Request();
+      var query = `select email, asset_access, tenant_access from nakheel_app_access where email like '%${email}%'`;
+      // query to the database and get the records
+
+      request.query(query, function (err, recordset) {
+        if (err) console.log(err);
+        let data = recordset.recordset;
+        if (email == "") data = [];
+        //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
+        console.log(data);
+
+        // send records as a response
+        res.status(200).send({ data });
+      });
+    });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+
+

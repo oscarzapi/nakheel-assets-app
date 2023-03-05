@@ -1,12 +1,14 @@
 import { useIsAuthenticated } from "@azure/msal-react";
 import { Box, useMediaQuery } from "@mui/material";
-import DateFilters from "components/DateFilters";
+import BubbleChart from "components/BubbleChart";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 import StatBox from "components/StatBox";
 import React from "react";
 import SignIn from "scenes/signin";
 import LineChart from "../../components/LineChart";
+import { AttachMoneyOutlined } from "@mui/icons-material";
+
 
 const Overall = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
@@ -14,18 +16,17 @@ const Overall = () => {
   //const userName = useSelector((state) => state.global.userName)
 
   return (
-    <Box m="2rem 2rem">
+    <Box m="6rem 2rem">
       {isAuthenticated ? (
         <Box>
           <FlexBetween>
             <Header title="Overview"></Header>
           </FlexBetween>
-          <DateFilters></DateFilters>
           <Box
             mt="20px"
             display="grid"
             gridTemplateColumns="repeat(12, 1fr)"
-            gridAutoRows="160px"
+            gridAutoRows="250px"
             gap="20px"
             sx={{
               "& > div": {
@@ -34,12 +35,34 @@ const Overall = () => {
             }}
           >
             {/* ROW 1 */}
-            <StatBox
-              title="Total Sales"
-              value={20}
-              change={14}
-              chart={<LineChart></LineChart>}
-            ></StatBox>
+            <Box
+          gridColumn="span 6"
+          gridRow="span 2"
+          borderRadius="0.55rem"
+        >
+          
+          <StatBox
+                title="Total Sales"
+                value={20}
+                change={14}
+                chart={<LineChart></LineChart>}
+                icon={<AttachMoneyOutlined></AttachMoneyOutlined>}
+              ></StatBox>
+              </Box>
+              <Box
+          gridColumn="span 6"
+          gridRow="span 2"
+          borderRadius="0.55rem"
+        >
+          
+          <StatBox
+                title="Sales Performance"
+                value={20}
+                change={14}
+                chart={<BubbleChart></BubbleChart>}
+                icon={<AttachMoneyOutlined></AttachMoneyOutlined>}
+              ></StatBox>
+              </Box>
           </Box>
         </Box>
       ) : (

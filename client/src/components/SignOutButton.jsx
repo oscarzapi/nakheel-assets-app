@@ -15,7 +15,7 @@ export const SignOutButton = () => {
         if (logoutType === "popup") {
             instance.logoutPopup({
                 postLogoutRedirectUri: "/",
-                mainWindowRedirectUri: "/dashboard" // redirects the top level app after logout
+                mainWindowRedirectUri: "/overall" // redirects the top level app after logout
             }).then(() => {
                 dispatch(logout())
             });

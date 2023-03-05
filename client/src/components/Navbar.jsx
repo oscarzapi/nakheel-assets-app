@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Menu as MenuIcon,
   ArrowDropDownOutlined
 } from "@mui/icons-material";
 import EmailIcon from '@mui/icons-material/Email';
@@ -25,6 +24,7 @@ import { useState } from "react";
 //import domtoimage from 'dom-to-image';
 import * as htmlToImage from "html-to-image";
 import SearchIcon from "@mui/icons-material/Search";
+import DateFilters from "./DateFilters";
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
@@ -71,23 +71,19 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
   };
 
   return (
-    <AppBar
+    <AppBar position= "fixed"
       sx={{
-        position: "static",
-        background: "none",
+        background: "#fcfcfc",
         boxShadow: "none",
-        color: "#03293C",
+        color: "#03293C"
       }}
     >
-      <Toolbar sx={{ justifyContent: "space-between", margin: "1.2rem" }}>
+      <Toolbar sx={{ justifyContent: "space-between", margin: "0.5rem" }}>
+        <Box flexGrow={1}>
         {/* LEFT SIDE*/}
+        
         <FlexBetween>
-          <IconButton
-            sx={{ color: "#03293C" }}
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            <MenuIcon></MenuIcon>
-          </IconButton>
+        <FlexBetween>
           <TextField
           sx={{marginLeft:'1rem'}}
             label="Filter..."
@@ -105,7 +101,20 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
         </FlexBetween>
         {/* RIGHT SIDE*/}
         <FlexBetween sx={{marginLeft: 'inherit'}}>
-          <IconButton onClick={handleClick}>
+          
+          <Button
+            onClick={handleSendEmail}
+            sx={{
+              //backgroundColor: theme.palette.secondary.light,
+              variant: "outlined",
+              fontSize: "14px",
+              fontWeight: "bold",
+              color: "#03293C",
+            }}
+          >
+            <EmailIcon />
+          </Button>
+        <IconButton onClick={handleClick}>
             <Box sx={{ flexDirection: "row" }}>
               <Box
                 display="flex"
@@ -135,22 +144,10 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
               {isAuthenticated ? <SignOutButton /> : <SignInButton />}
             </MenuItem>
           </Menu>
-          <Box>
-          <Button
-            onClick={handleSendEmail}
-            sx={{
-              //backgroundColor: theme.palette.secondary.light,
-              variant: "outlined",
-              fontSize: "14px",
-              fontWeight: "bold",
-              color: "#03293C",
-            }}
-          >
-            <EmailIcon />
-          </Button>
-        </Box>
         </FlexBetween>
-        
+        </FlexBetween>
+        <DateFilters></DateFilters>
+        </Box>
       </Toolbar>
     </AppBar>
   );

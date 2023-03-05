@@ -26,12 +26,12 @@ const Layout = () => {
     <Box width="100%" height="100%" justifyContent="center">
       {isAuthenticated ? (
         <Box>
-          <Sidebar
+          {/* <Sidebar
             isNonMobile={isNonMobile}
             drawerWidth="250px"
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
-          ></Sidebar>
+          ></Sidebar> */}
           <Box flexGrow={1}>
             <Navbar
               isSidebarOpen={isSidebarOpen}

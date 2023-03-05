@@ -7,7 +7,7 @@ const LineChart = (props) => {
   const chartRef = useRef(null);
 
   useLayoutEffect(() => {
-    let root = am5.Root.new("chartdiv");
+    let root = am5.Root.new("linechartdiv");
 
     root.setThemes([am5themes_Animated.new(root)]);
 
@@ -225,6 +225,6 @@ const LineChart = (props) => {
     };
   }, []);
 
-  return <div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>;
+  return <div id="linechartdiv" style={{ width: "100%", height: "300px" }}></div>;
 }
 export default LineChart;
