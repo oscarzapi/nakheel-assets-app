@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     mode :'dark',
-    userData: {},
+    userEmail: '',
     dateMode:'daily',
     data: []
 }
@@ -15,7 +15,7 @@ export const globalSlice = createSlice({
             state.mode = state.mode === 'light' ? 'dark' : 'light'
         },
         loginSuccess: (state, action) => {
-            state.userData = action.payload;
+            state.userEmail = action.payload;
         },
         logout: state => {
             state.userName = '';

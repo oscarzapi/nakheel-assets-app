@@ -89,20 +89,42 @@ export const getData = async (req, res) => {
     const { email } = req.query;
     await sql.connect(sqlConfig, function (err) {
       // create Request object
-      var request = new sql.Request();
-      var query = `select email, asset_access, tenant_access from nakheel_app_access where email like '%${email}%'`;
+      var requestUserScope = new sql.Request();
+      var queryUserScope = `select email, asset_access, tenant_access from nakheel_app_access where email like '%${email}%'`;
+      let dataUserScope = []
+      
       // query to the database and get the records
 
-      request.query(query, function (err, recordset) {
+      requestUserScope.query(queryUserScope, function (err, recordset) {
         if (err) console.log(err);
-        let data = recordset.recordset;
-        if (email == "") data = [];
+        dataUserScope = recordset.recordset[0];
+        if (email == "") dataUserScope = [];
         //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
-        console.log(data);
-
+        console.log(dataUserScope);
         // send records as a response
-        res.status(200).send({ data });
+        //res.status(200).send({dataUserScope });
       });
+
+      var requestSalesData = new sql.Request();
+      var querySalesData = `select * from RG_Sales`;
+      if (dataUserScope !=={}
+       && dataUserScope.asset_access !== 'All'
+        && dataUserScope.tenant_access !== 'All'){
+          //querySalesData = `select * from RG_Sales where Name like '%${asset}%' and Tenant_name like '%${tenant}%'`
+     }
+      let salesData = []
+
+      requestSalesData.query(querySalesData, function (err, recordset) {
+        if (err) console.log(err);
+        if (dataUserScope == {}) salesData = [];
+        salesData = recordset.recordset
+        //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
+        //console.log(salesData);
+        // send records as a response
+        res.status(200).send({salesData });
+      });
+
+
     });
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {MicrosoftLoginButton} from 'react-social-login-buttons';
 import {  useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../authConfig";
@@ -13,7 +13,7 @@ import { useLazyGetDataQuery } from 'state/api';
 const SignIn = () => {
   const { instance } = useMsal();
   const dispatch = useDispatch()
-  const userEmail = useSelector((state) => state.global.userData.userEmail)
+  const userEmail = useSelector((state) => state.global.userEmail)
   const [trigger, result] = useLazyGetDataQuery()
 
 
@@ -21,6 +21,7 @@ const SignIn = () => {
     if (userEmail !== null)
       trigger({userEmail})
       dispatch(getData(result))
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userEmail]);
 
 
@@ -35,7 +36,7 @@ const SignIn = () => {
               const userEmail = userData['username']
               window.localStorage.setItem('USERNAME_STATE', JSON.stringify(userName));
               window.localStorage.setItem('USEREMAIL_STATE', JSON.stringify(userEmail));
-              dispatch(loginSuccess({userName, userEmail}))
+              dispatch(loginSuccess(userEmail))
             })
         }
         

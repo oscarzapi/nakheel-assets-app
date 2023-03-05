@@ -17,7 +17,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 const DateFilters = () => {
   const dispatch = useDispatch();
    const dateModeGlobal = useSelector((state) => state.global.dateMode);
-   const userEmail = useSelector((state) => state.global.userData.userEmail)
+   const userEmail = useSelector((state) => state.global.userEmail)
 
 
   const [dateFilter, setDateFilter] = useState("daily");

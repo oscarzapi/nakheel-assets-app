@@ -1,16 +1,16 @@
 import React, { useState, Suspense, useEffect } from "react";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "../../components/Navbar";
-import Sidebar from "../../components/Sidebar";
+//import Sidebar from "../../components/Sidebar";
 import { useIsAuthenticated } from "@azure/msal-react";
 import SignIn from "scenes/signin";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const Layout = () => {
   const isAuthenticated = useIsAuthenticated();
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+  //const isNonMobile = useMediaQuery("(min-width:600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   //const dispatch = useDispatch()
   const userName = useSelector((state) => state.global.userName);
