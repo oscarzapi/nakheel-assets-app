@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {MicrosoftLoginButton} from 'react-social-login-buttons';
 import {  useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../authConfig";
@@ -14,13 +14,14 @@ const SignIn = () => {
   const { instance } = useMsal();
   const dispatch = useDispatch()
   const userEmail = useSelector((state) => state.global.userData.userEmail)
-
   const [trigger, result] = useLazyGetDataQuery()
-  console.log({'userEmail':userEmail, 'result':result})
+
 
   useEffect(() => {
-    trigger({userEmail})
-  }, [userEmail])
+    if (userEmail !== null)
+      trigger({userEmail})
+      dispatch(getData(result))
+  }, [userEmail]);
 
 
 
@@ -32,10 +33,9 @@ const SignIn = () => {
               const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(1)))
               const userName = userData['name'].split(" ").slice(0,2).join(' ')
               const userEmail = userData['username']
-              const userDataObj = {userName, userEmail}
               window.localStorage.setItem('USERNAME_STATE', JSON.stringify(userName));
-              console.log(userDataObj)
-              dispatch(loginSuccess(userDataObj))
+              window.localStorage.setItem('USEREMAIL_STATE', JSON.stringify(userEmail));
+              dispatch(loginSuccess({userName, userEmail}))
             })
         }
         
