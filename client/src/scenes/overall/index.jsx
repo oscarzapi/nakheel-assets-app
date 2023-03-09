@@ -8,15 +8,12 @@ import React from "react";
 import SignIn from "scenes/signin";
 import LineChart from "../../components/LineChart";
 import { AttachMoneyOutlined } from "@mui/icons-material";
-import { useSelector } from "react-redux";
 
 
 const Overall = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const isAuthenticated = useIsAuthenticated();
   //const userName = useSelector((state) => state.global.userName)
-  const data = useSelector(state => state.global.data)
-  console.log({'data':data})
 
   return (
     <Box m="6rem 2rem">

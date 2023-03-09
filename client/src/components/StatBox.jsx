@@ -1,8 +1,20 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import FlexBetween from "./FlexBetween";
+import { ArrowRightOutlined } from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const StatBox = ({ title, value, change, chart, icon}) => {
+  
+  const {pathname} = useLocation()
+    const [active, setActive] = useState('')
+    const navigate = useNavigate()
+
+  const handleClick = () =>{
+    console.log(`You clicked ${title.toLowerCase()}`)
+
+  }
   return (
     <Box
       gridColumn="span 12"
@@ -21,6 +33,12 @@ const StatBox = ({ title, value, change, chart, icon}) => {
       <FlexBetween>
         <Typography variant="h5" sx={{ color: "#03293C" }}>
           {title}
+          <Typography sx={{ color: "#808B90", fontSize:'12px' }}>
+            <Button onClick={handleClick}>
+              See Details
+              <ArrowRightOutlined></ArrowRightOutlined>
+            </Button>
+          </Typography>
         </Typography>
         <Typography variant="h4" sx={{color: change > 0 ? 'green':'red'}}> {value}</Typography>
       </FlexBetween>

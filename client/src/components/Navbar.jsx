@@ -25,6 +25,8 @@ import { useState } from "react";
 import * as htmlToImage from "html-to-image";
 import SearchIcon from "@mui/icons-material/Search";
 import DateFilters from "./DateFilters";
+import { useLazyGetSalesDataQuery } from "state/api";
+import { useSelector } from "react-redux";
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
@@ -36,6 +38,13 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   //const data = [{exampleData:1}]
+  const [trigger, result] = useLazyGetSalesDataQuery()
+  const salesData = useSelector((state) => state.global.salesData)
+
+  const handleClickTest = async () => {
+        trigger('oozp01@educastillalamancha.es')
+        await console.log({'salesData':result && result.data.salesData})
+  } 
 
   const handleSendEmail = async () => {
     var node = document.getElementById("root");
@@ -147,6 +156,7 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
         </FlexBetween>
         </FlexBetween>
         <DateFilters></DateFilters>
+        <Button onClick={handleClickTest}>Test</Button>
         </Box>
       </Toolbar>
     </AppBar>

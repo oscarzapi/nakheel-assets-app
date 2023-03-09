@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   reducerPath: "adminApi",
-  tagTypes: ["SqlRequest", "UpdateComment", "GetData"],
+  tagTypes: ["SqlRequest", "UpdateComment", "GetSalesData"],
   endpoints: (build) => ({
     getSqlRequests: build.query({
       query: ({ page, pageSize, sort, tcode }) => ({
@@ -21,13 +21,13 @@ export const api = createApi({
       }),
       providesTags: ["UpdateComments"],
     }),
-    getData: build.query({
-        query: ( email ) => ({
+    getSalesData: build.query({
+        query: ( {email, dateMode} ) => ({
           url: "sql-requests/data",
           method: "GET",
-          params: { email },
+          params: { email, dateMode },
         }),
-        providesTags: ["GetData"],
+        providesTags: ["GetSalesData"],
       }),
   }),
 });
@@ -36,5 +36,5 @@ export const {
   useGetSqlRequestsQuery,
   useLazyUpdateCommentsQuery,
   useLazyGetSqlRequestsQuery,
-  useLazyGetDataQuery
+  useLazyGetSalesDataQuery
 } = api;

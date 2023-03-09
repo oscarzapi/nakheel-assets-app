@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     mode :'dark',
     userEmail: '',
+    userName:'',
     dateMode:'daily',
-    data: []
+    salesData: []
 }
 
 export const globalSlice = createSlice({
@@ -17,6 +18,9 @@ export const globalSlice = createSlice({
         loginSuccess: (state, action) => {
             state.userEmail = action.payload;
         },
+        setUserName: (state, action) => {
+            state.userName = action.payload;
+        },
         logout: state => {
             state.userName = '';
             state.isLoggedIn = false
@@ -24,12 +28,12 @@ export const globalSlice = createSlice({
         setDateMode: (state, action) => {
             state.dateMode = action.payload
         },
-        getData: (state, action) => {
-            state.data = action.payload
+        getSalesData: (state, action) => {
+            state.salesData = action.payload
         },
     }
 })
 
-export const {setMode, loginSuccess, logout, setDateMode,getData } = globalSlice.actions
+export const {setMode, loginSuccess, logout, setDateMode,getSalesData, setUserName } = globalSlice.actions
 
 export default globalSlice.reducer

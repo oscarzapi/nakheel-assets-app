@@ -1,25 +1,31 @@
 import React, { useState, Suspense, useEffect } from "react";
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../../components/Navbar";
 //import Sidebar from "../../components/Sidebar";
 import { useIsAuthenticated } from "@azure/msal-react";
 import SignIn from "scenes/signin";
 import CircularProgress from "@mui/material/CircularProgress";
+import { setUserName, getSalesData } from "state";
 
 const Layout = () => {
   const isAuthenticated = useIsAuthenticated();
   //const isNonMobile = useMediaQuery("(min-width:600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  //const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const userName = useSelector((state) => state.global.userName);
-  const [userNameAux, setUserNameAux] = useState("");
+  const salesData = useSelector((state) => state.global.salesData)
+  const dateMode = useSelector((state) => state.global.dateMode)
 
   useEffect(() => {
-    const userFromLocalStorage = window.localStorage.getItem("USERNAME_STATE");
+    const userFromLocalStorage = JSON.parse(window.localStorage.getItem("USERNAME_STATE"));
+    const userSalesDataFromLocalStorage = JSON.parse(window.localStorage.getItem("USER_SALESDATA"));
     if (userFromLocalStorage !== null)
-      setUserNameAux(JSON.parse(userFromLocalStorage));
+      dispatch(setUserName(userFromLocalStorage))
+      dispatch(getSalesData(userSalesDataFromLocalStorage))
+      console.log({'salesData':salesData})
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName]);
 
   return (
@@ -36,7 +42,7 @@ const Layout = () => {
             <Navbar
               isSidebarOpen={isSidebarOpen}
               setIsSidebarOpen={setIsSidebarOpen}
-              userName={userNameAux}
+              userName={userName}
             ></Navbar>
             <Suspense
               fallback={

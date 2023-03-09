@@ -86,40 +86,46 @@ export const updateComments = async (req, res) => {
 
 export const getData = async (req, res) => {
   try {
-    const { email } = req.query;
+    const { email, dateMode } = req.query;
+    
     await sql.connect(sqlConfig, function (err) {
       // create Request object
-      var requestUserScope = new sql.Request();
-      var queryUserScope = `select email, asset_access, tenant_access from nakheel_app_access where email like '%${email}%'`;
-      let dataUserScope = []
-      
-      // query to the database and get the records
-
-      requestUserScope.query(queryUserScope, function (err, recordset) {
-        if (err) console.log(err);
-        dataUserScope = recordset.recordset[0];
-        if (email == "") dataUserScope = [];
-        //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
-        console.log(dataUserScope);
-        // send records as a response
-        //res.status(200).send({dataUserScope });
-      });
-
       var requestSalesData = new sql.Request();
-      var querySalesData = `select * from RG_Sales`;
-      if (dataUserScope !=={}
-       && dataUserScope.asset_access !== 'All'
-        && dataUserScope.tenant_access !== 'All'){
-          //querySalesData = `select * from RG_Sales where Name like '%${asset}%' and Tenant_name like '%${tenant}%'`
-     }
+
+      // query to the database and get the records
+      var querySalesData = `DECLARE @QUERY VARCHAR(2000)
+      DECLARE @USER_NAME VARCHAR(2000)
+      DECLARE @ASSET_ACCESS VARCHAR(2000)
+      DECLARE @TENANT_ACCESS VARCHAR(2000)
+      
+      SET @QUERY = 'select top 100 *
+      from dbo.RG_Sales rg'
+      
+      SET @USER_NAME = (select email from dbo.nakheel_app_access where email like '%${email}%')
+      SET @ASSET_ACCESS = (select  asset_access from dbo.nakheel_app_access where email like '%${email}%')
+      SET @TENANT_ACCESS = (select tenant_access from dbo.nakheel_app_access where email like '%${email}%')
+      
+       set @QUERY = 
+       case 
+       when @ASSET_ACCESS != 'All' and @TENANT_ACCESS != 'All' then 'select top 100 rg.*
+      from dbo.RG_Sales rg
+      join nakheel_app_access naa on naa.asset_access = rg.Name and naa.tenant_access = rg.[Tenant Name]
+      and naa.email like ''%${email}%'''
+      when @ASSET_ACCESS != 'All' and @TENANT_ACCESS = 'All'
+       then 'select top 100 rg.*
+      from dbo.RG_Sales rg
+      join nakheel_app_access naa on naa.asset_access = rg.Name 
+      and naa.email like ''%${email}%'''
+      else 'select top 100 *
+      from dbo.RG_Sales rg' end
+      
+      EXEC( @QUERY)`;
+
       let salesData = []
 
       requestSalesData.query(querySalesData, function (err, recordset) {
         if (err) console.log(err);
-        if (dataUserScope == {}) salesData = [];
         salesData = recordset.recordset
-        //const dataFiltered = recordset.recordset.slice((page)*pageSize, (page+1)*pageSize)
-        //console.log(salesData);
         // send records as a response
         res.status(200).send({salesData });
       });
