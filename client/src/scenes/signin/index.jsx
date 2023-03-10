@@ -19,14 +19,12 @@ const SignIn = () => {
 
 
   useEffect(() => {
-    if (userEmail !== null) console.log(userEmail)
       trigger({userEmail, dateMode})
       .then(() => {
-      //console.log(result)
-      result && result.data && dispatch(getSalesData(result.data.salesData))
-      dispatch(setDateMode(dateMode))
-      result && result.data && window.localStorage.setItem('USER_SALESDATA', JSON.stringify(result.data.salesData));
-      window.localStorage.setItem('USER_DATEMODE', JSON.stringify(dateMode));
+      result && result.data && dispatch(getSalesData(result.data))
+      
+      result && result.data && window.localStorage.setItem('USER_SALESDATA', JSON.stringify(result.data));
+      
       })
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userEmail]);
@@ -43,6 +41,7 @@ const SignIn = () => {
               const userEmail = userData['username']
               window.localStorage.setItem('USERNAME_STATE', JSON.stringify(userName));
               window.localStorage.setItem('USEREMAIL_STATE', JSON.stringify(userEmail));
+              window.localStorage.setItem('USER_DATEMODE', JSON.stringify(dateMode));
               dispatch(loginSuccess(userEmail))
             })
         }

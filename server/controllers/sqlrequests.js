@@ -86,14 +86,15 @@ export const updateComments = async (req, res) => {
 
 export const getData = async (req, res) => {
   try {
-    const { email, dateMode } = req.query;
+    const { userEmail, dateMode } = req.query;
+    
     
     await sql.connect(sqlConfig, function (err) {
       // create Request object
       var requestSalesData = new sql.Request();
 
       // query to the database and get the records
-      var querySalesData = `DECLARE @QUERY VARCHAR(2000)
+      /* var querySalesData = `DECLARE @QUERY VARCHAR(2000)
       DECLARE @USER_NAME VARCHAR(2000)
       DECLARE @ASSET_ACCESS VARCHAR(2000)
       DECLARE @TENANT_ACCESS VARCHAR(2000)
@@ -119,18 +120,87 @@ export const getData = async (req, res) => {
       else 'select top 100 *
       from dbo.RG_Sales rg' end
       
-      EXEC( @QUERY)`;
+      EXEC( @QUERY)`; */
+      var querySalesData = `DECLARE @QUERY VARCHAR(2000)
+      DECLARE @USER_NAME VARCHAR(2000)
+      DECLARE @ASSET_ACCESS VARCHAR(2000)
+      DECLARE @TENANT_ACCESS VARCHAR(2000)
+      
+      
+      SET @USER_NAME = (select email from dbo.nakheel_app_access where email like '%${userEmail}%')
+      SET @ASSET_ACCESS = (select  asset_access from dbo.nakheel_app_access where email like '%${userEmail}%')
+      SET @TENANT_ACCESS = (select tenant_access from dbo.nakheel_app_access where email like '%${userEmail}%')
+      
+       set @QUERY = 
+       case 
+       when @ASSET_ACCESS != 'All' and @TENANT_ACCESS != 'All' then 'select  
+       Name
+       ,[Tenant Name]
+       ,CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE) AS ${dateMode}
+      ,sum(rg.[Net Sales]) as sales
+      from dbo.RG_Sales rg
+      join nakheel_app_access naa on naa.asset_access = rg.Name and naa.tenant_access = rg.[Tenant Name]
+      and naa.email like ''%${userEmail}%''
+      group by Name
+       ,[Tenant Name]
+       ,CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE)
+      order by Name
+       ,[Tenant Name]
+       ,CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE)'
+      when @ASSET_ACCESS != 'All' and @TENANT_ACCESS = 'All'
+       then 'select 
+       Name
+       ,[Tenant Name]
+       ,CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE) AS ${dateMode},
+      sum(rg.[Net Sales]) as sales from dbo.RG_Sales rg
+      join nakheel_app_access naa on naa.asset_access = rg.Name
+      and naa.email like ''%${userEmail}%''
+      group by Name
+       ,[Tenant Name]
+       ,CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE)
+      order by CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE)'
+      else 'select 
+       Name
+       ,[Tenant Name]
+       , CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE) AS ${dateMode},
+      sum(rg.[Net Sales]) as sales from dbo.RG_Sales rg
+      group by Name
+       ,[Tenant Name]
+       ,CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE)
+      order by Name
+       ,[Tenant Name]
+       ,CAST(DATEADD(${dateMode}, DATEDIFF(${dateMode}, 0, rg.[Sale Date]), 0) AS DATE)' end
+      
+      EXEC( @QUERY)
+      `
 
+      let salesDataAux = []
       let salesData = []
+
 
       requestSalesData.query(querySalesData, function (err, recordset) {
         if (err) console.log(err);
-        salesData = recordset.recordset
+
+        //Get all the sales
+        salesDataAux = recordset.recordset
+        
+        salesDataAux.forEach(value => {
+          salesData.push({'Name': value['Name'], 'Tenant Name': value['Tenant Name'], 'date': parseInt((new Date(value[dateMode]).getTime()).toFixed(0)), 'value': value['sales']})
+        })
+        console.log(salesData)
+
+        //Get percentage of change from previous sales
+        // Get the last two objects in the array
+const totalSalesObj = salesData[salesData.length - 1];
+const totalPreviousSalesObj = salesData[salesData.length - 2];
+
+// Calculate the percentage change
+const percentageChange = totalPreviousSalesObj.value == 0 ? totalSalesObj.value*100 : ((totalSalesObj.value - totalPreviousSalesObj.value) / totalPreviousSalesObj.value) * 100;
+
+        console.log(totalSalesObj.value, percentageChange )
         // send records as a response
-        res.status(200).send({salesData });
+        res.status(200).send({salesData, totalSales: parseFloat(totalSalesObj.value).toFixed(2), percentageChange});
       });
-
-
     });
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -40,10 +40,12 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
   //const data = [{exampleData:1}]
   const [trigger, result] = useLazyGetSalesDataQuery()
   const salesData = useSelector((state) => state.global.salesData)
+  const dateMode = useSelector((state) => state.global.dateMode)
+  const userEmail = useSelector((state) => state.global.userEmail)
 
   const handleClickTest = async () => {
-        trigger('oozp01@educastillalamancha.es')
-        await console.log({'salesData':result && result.data.salesData})
+        trigger({userEmail, dateMode})
+        await console.log({'salesData':result.data})
   } 
 
   const handleSendEmail = async () => {

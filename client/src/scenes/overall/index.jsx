@@ -8,12 +8,29 @@ import React from "react";
 import SignIn from "scenes/signin";
 import LineChart from "../../components/LineChart";
 import { AttachMoneyOutlined } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getSalesData, setUserName } from "state";
 
 
 const Overall = () => {
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const isAuthenticated = useIsAuthenticated();
-  //const userName = useSelector((state) => state.global.userName)
+  const dispatch = useDispatch()
+  const userName = useSelector((state) => state.global.userName);
+  const salesData = useSelector((state) => state.global.salesData)
+  const dateMode = useSelector((state) => state.global.dateMode)
+
+
+  useEffect(() => {
+    const userFromLocalStorage = JSON.parse(window.localStorage.getItem("USERNAME_STATE"));
+    const userSalesDataFromLocalStorage = JSON.parse(window.localStorage.getItem("USER_SALESDATA"));
+    if (userFromLocalStorage !== null)
+      dispatch(setUserName(userFromLocalStorage))
+      dispatch(getSalesData(userSalesDataFromLocalStorage))
+      console.log(userName,dateMode, salesData)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userName, dateMode]);
 
   return (
     <Box m="6rem 2rem">
@@ -43,9 +60,9 @@ const Overall = () => {
           
           <StatBox
                 title="Total Sales"
-                value={20}
-                change={14}
-                chart={<LineChart></LineChart>}
+                value={salesData['totalSales']}
+                change={salesData['percentageChange']}
+                chart={salesData['salesData'] && <LineChart data={salesData['salesData']} title='Total Sales'></LineChart>}
                 icon={<AttachMoneyOutlined></AttachMoneyOutlined>}
               ></StatBox>
               </Box>
@@ -59,7 +76,7 @@ const Overall = () => {
                 title="Sales Performance"
                 value={20}
                 change={14}
-                chart={<BubbleChart></BubbleChart>}
+                chart={<BubbleChart data={salesData}></BubbleChart>}
                 icon={<AttachMoneyOutlined></AttachMoneyOutlined>}
               ></StatBox>
               </Box>

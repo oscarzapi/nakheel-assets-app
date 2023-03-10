@@ -4,7 +4,7 @@ const initialState = {
     mode :'dark',
     userEmail: '',
     userName:'',
-    dateMode:'daily',
+    dateMode:'day',
     salesData: []
 }
 

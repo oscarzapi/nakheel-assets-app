@@ -1,7 +1,8 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDateMode } from "state";
+import { getSalesData, setDateMode } from "state";
+import { useLazyGetSalesDataQuery } from "state/api";
 const { styled } = require("@mui/system");
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -16,20 +17,26 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 
 const DateFilters = () => {
   const dispatch = useDispatch();
-   const dateModeGlobal = useSelector((state) => state.global.dateMode);
-   const userEmail = useSelector((state) => state.global.userEmail)
-
-
-  const [dateFilter, setDateFilter] = useState("daily");
+  const userEmail = useSelector((state) => state.global.userEmail);
+  const [trigger, result] = useLazyGetSalesDataQuery();
+  const [dateFilter, setDateFilter] = useState("day");
   const handleChange = (event, newFilter) => {
     setDateFilter(newFilter);
-    dispatch(setDateMode(newFilter))
-    console.log(dateModeGlobal, userEmail)
   };
+  useEffect(() => {
+    dispatch(setDateMode(dateFilter));
+    trigger({ userEmail, dateMode: dateFilter }).then(() => {
+      result && result.data && dispatch(getSalesData(result.data));
+      result &&
+        result.data &&
+        window.localStorage.setItem(
+          "USER_SALESDATA",
+          JSON.stringify(result.data)
+        );
+    });
 
-  /* useEffect(() => {
-    console.log('dateModeGlobal', dateModeGlobal)
-  }, [dateModeGlobal]) */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dateFilter]);
 
   return (
     <>
@@ -39,10 +46,10 @@ const DateFilters = () => {
         onChange={handleChange}
         //onClick={() => dispatch(setDateMode(dateMode))}
       >
-        <ToggleButton value="daily">daily</ToggleButton>
-        <ToggleButton value="weekly">weekly</ToggleButton>
-        <ToggleButton value="monthly">monthly</ToggleButton>
-        <ToggleButton value="yearly">yearly</ToggleButton>
+        <ToggleButton value="day">daily</ToggleButton>
+        <ToggleButton value="week">weekly</ToggleButton>
+        <ToggleButton value="month">monthly</ToggleButton>
+        <ToggleButton value="year">yearly</ToggleButton>
       </StyledToggleButtonGroup>
     </>
   );
