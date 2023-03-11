@@ -36,7 +36,7 @@ const SignIn = () => {
             instance.loginPopup(loginRequest).catch(e => {
                 console.log(e);
             }).then(() => {
-              const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(2)))
+              const userData = JSON.parse(sessionStorage.getItem(sessionStorage.key(1)))
               const userName = userData['name'].split(" ").slice(0,2).join(' ')
               const userEmail = userData['username']
               window.localStorage.setItem('USERNAME_STATE', JSON.stringify(userName));

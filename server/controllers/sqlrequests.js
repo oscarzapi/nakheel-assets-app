@@ -187,7 +187,7 @@ export const getData = async (req, res) => {
         salesDataAux.forEach(value => {
           salesData.push({'Name': value['Name'], 'Tenant Name': value['Tenant Name'], 'date': parseInt((new Date(value[dateMode]).getTime()).toFixed(0)), 'value': value['sales']})
         })
-        console.log(salesData)
+        console.log(dateMode,salesData.length)
 
         //Get percentage of change from previous sales
         // Get the last two objects in the array
@@ -197,9 +197,9 @@ const totalPreviousSalesObj = salesData[salesData.length - 2];
 // Calculate the percentage change
 const percentageChange = totalPreviousSalesObj.value == 0 ? totalSalesObj.value*100 : ((totalSalesObj.value - totalPreviousSalesObj.value) / totalPreviousSalesObj.value) * 100;
 
-        console.log(totalSalesObj.value, percentageChange )
+        console.log(totalSalesObj.value, parseInt(percentageChange) )
         // send records as a response
-        res.status(200).send({salesData, totalSales: parseFloat(totalSalesObj.value).toFixed(2), percentageChange});
+        res.status(200).send({salesData, totalSales: parseFloat(totalSalesObj.value).toFixed(2), percentageChange: parseInt(percentageChange)});
       });
     });
   } catch (error) {

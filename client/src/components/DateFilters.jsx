@@ -18,25 +18,27 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 const DateFilters = () => {
   const dispatch = useDispatch();
   const userEmail = useSelector((state) => state.global.userEmail);
-  const [trigger, result] = useLazyGetSalesDataQuery();
+  const dateMode = useSelector((state) => state.global.dateMode);
+  const salesData = useSelector((state) => state.global.salesData);
+  const [trigger, {data, isLoading}] = useLazyGetSalesDataQuery();
   const [dateFilter, setDateFilter] = useState("day");
+  const [salesDataAux, setSalesDataAux] = useState([]);
   const handleChange = (event, newFilter) => {
     setDateFilter(newFilter);
+    dispatch(setDateMode(newFilter));
+    trigger({ userEmail, dateMode: newFilter })
   };
   useEffect(() => {
-    dispatch(setDateMode(dateFilter));
-    trigger({ userEmail, dateMode: dateFilter }).then(() => {
-      result && result.data && dispatch(getSalesData(result.data));
-      result &&
-        result.data &&
+       console.log(data)
+      !isLoading && setSalesDataAux(data)
+    data && dispatch(getSalesData(data));
+      data &&  
         window.localStorage.setItem(
           "USER_SALESDATA",
-          JSON.stringify(result.data)
+          JSON.stringify(data)
         );
-    });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateFilter]);
+  }, [data]);
 
   return (
     <>

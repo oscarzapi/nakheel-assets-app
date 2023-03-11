@@ -28,7 +28,7 @@ const Overall = () => {
     if (userFromLocalStorage !== null)
       dispatch(setUserName(userFromLocalStorage))
       dispatch(getSalesData(userSalesDataFromLocalStorage))
-      console.log(userName,dateMode, salesData)
+      //console.log(userName,dateMode, salesData)
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName, dateMode]);
 
