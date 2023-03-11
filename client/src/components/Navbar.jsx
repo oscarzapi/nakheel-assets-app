@@ -8,14 +8,15 @@ import { Box } from "@mui/system";
 import profileImage from "assets/Nakheel.png";
 import {
   AppBar,
+  Autocomplete,
   Button,
   IconButton,
-  InputAdornment,
   Menu,
   MenuItem,
   TextField,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useIsAuthenticated } from "@azure/msal-react";
 import { SignOutButton } from "./SignOutButton";
@@ -30,23 +31,24 @@ import { useSelector } from "react-redux";
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
+
 const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
-  //const dispatch = useDispatch()
+  const salesData = useSelector((state) => state.global.salesData)
+  const dateMode = useSelector((state) => state.global.dateMode)
+  const userEmail = useSelector((state) => state.global.userEmail)
   const isAuthenticated = useIsAuthenticated();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [value, setValue] = useState();
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   //const data = [{exampleData:1}]
-  const [trigger, result] = useLazyGetSalesDataQuery()
-  const salesData = useSelector((state) => state.global.salesData)
-  const dateMode = useSelector((state) => state.global.dateMode)
-  const userEmail = useSelector((state) => state.global.userEmail)
-
-  const handleClickTest = async () => {
-        trigger({userEmail, dateMode})
-        await console.log({'salesData':result.data})
-  } 
+  const [trigger, {data}] = useLazyGetSalesDataQuery()
+  console.log(salesData)
+  const handleChange = (event, newFilter) => {
+    setValue(newFilter);
+    trigger({ userEmail, dateMode, filter: newFilter })
+  };
 
   const handleSendEmail = async () => {
     var node = document.getElementById("root");
@@ -95,20 +97,18 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
         
         <FlexBetween>
         <FlexBetween>
-          <TextField
-          sx={{marginLeft:'1rem'}}
-            label="Filter..."
-            variant="standard"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+        {salesData && salesData['AssetsAndTenantNames'] &&
+        <Autocomplete
+        id="combo-box-demo"
+        options={salesData['AssetsAndTenantNames']}
+        sx={{ width:  150  }}
+        onChange={handleChange}
+        renderInput={(params) => (
+          <TextField {...params}
+           label="Filter..."
+           variant="standard" />
+        )}
+      />}
         </FlexBetween>
         {/* RIGHT SIDE*/}
         <FlexBetween sx={{marginLeft: 'inherit'}}>
@@ -158,7 +158,6 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
         </FlexBetween>
         </FlexBetween>
         <DateFilters></DateFilters>
-        <Button onClick={handleClickTest}>Test</Button>
         </Box>
       </Toolbar>
     </AppBar>

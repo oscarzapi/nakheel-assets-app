@@ -22,10 +22,10 @@ export const api = createApi({
       providesTags: ["UpdateComments"],
     }),
     getSalesData: build.query({
-        query: ( {userEmail, dateMode} ) => ({
+        query: ( {userEmail, dateMode, filter} ) => ({
           url: "sql-requests/data",
           method: "GET",
-          params: { userEmail, dateMode },
+          params: { userEmail, dateMode, filter },
         }),
         providesTags: ["GetSalesData"],
       }),

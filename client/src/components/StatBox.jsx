@@ -5,16 +5,14 @@ import { ArrowRightOutlined } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const StatBox = ({ title, value, change, chart, icon}) => {
-  
-  const {pathname} = useLocation()
-    const [active, setActive] = useState('')
-    const navigate = useNavigate()
+const StatBox = ({ title, value, change, chart, icon }) => {
+  const { pathname } = useLocation();
+  const [active, setActive] = useState("");
+  const navigate = useNavigate();
 
-  const handleClick = () =>{
-    console.log(`You clicked ${title.toLowerCase()}`)
-
-  }
+  const handleClick = () => {
+    console.log(`You clicked ${title.toLowerCase()}`);
+  };
   return (
     <Box
       gridColumn="span 12"
@@ -31,21 +29,27 @@ const StatBox = ({ title, value, change, chart, icon}) => {
       color="#03293C"
     >
       <FlexBetween>
-        <Typography variant="h5" sx={{ color: "#03293C" }}>
+        <Typography variant="h5" sx={{ color: "#03293C", marginBottom: '0px' }}>
           {title}
-          <Typography sx={{ color: "#808B90", fontSize:'12px' }}>
+          <Typography sx={{ color: "#808B90", fontSize: "12px", marginTop: '0px' }}>
             <Button onClick={handleClick}>
               See Details
               <ArrowRightOutlined></ArrowRightOutlined>
             </Button>
           </Typography>
         </Typography>
-        <Typography variant="h4" sx={{color: change > 0 ? 'green':'red'}}> {value}</Typography>
+        <Typography variant="h5" sx={{ color: "#03293C" }}>
+          {" "}
+          {value}
+          <Typography sx={{ fontSize: '15px', color: change > 0 ? "green" : "red", paddingLeft: '2rem' }}>
+            {" "}
+            {change} %
+          </Typography>
+        </Typography>
       </FlexBetween>
       {chart}
       <FlexBetween gap="1rem">
-      <Typography variant="h4"> {icon} </Typography>
-        <Typography variant="h4" sx={{color: change > 0 ? 'green':'red'}}> {change}%</Typography>
+        <Typography variant="h4"> {icon} </Typography>
       </FlexBetween>
     </Box>
   );

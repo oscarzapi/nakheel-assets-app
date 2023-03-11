@@ -20,17 +20,14 @@ const DateFilters = () => {
   const userEmail = useSelector((state) => state.global.userEmail);
   const dateMode = useSelector((state) => state.global.dateMode);
   const salesData = useSelector((state) => state.global.salesData);
-  const [trigger, {data, isLoading}] = useLazyGetSalesDataQuery();
+  const [trigger, {data}] = useLazyGetSalesDataQuery();
   const [dateFilter, setDateFilter] = useState("day");
-  const [salesDataAux, setSalesDataAux] = useState([]);
   const handleChange = (event, newFilter) => {
     setDateFilter(newFilter);
     dispatch(setDateMode(newFilter));
     trigger({ userEmail, dateMode: newFilter })
   };
   useEffect(() => {
-       console.log(data)
-      !isLoading && setSalesDataAux(data)
     data && dispatch(getSalesData(data));
       data &&  
         window.localStorage.setItem(
