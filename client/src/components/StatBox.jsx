@@ -4,13 +4,17 @@ import FlexBetween from "./FlexBetween";
 import { ArrowRightOutlined } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const StatBox = ({ title, value, change, chart, icon }) => {
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
   const navigate = useNavigate();
 
+
   const handleClick = () => {
+    const lcText = title.toLowerCase().replace(/ /g,"_").concat('_details')
+    navigate(`/${lcText}`)
     console.log(`You clicked ${title.toLowerCase()}`);
   };
   return (

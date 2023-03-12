@@ -22,9 +22,10 @@ const DateFilters = () => {
   const [trigger, {data}] = useLazyGetSalesDataQuery();
   const [dateFilter, setDateFilter] = useState("day");
   const handleChange = (event, newFilter) => {
-    setDateFilter(newFilter);
-    dispatch(setDateMode(newFilter));
-    trigger({ userEmail, dateMode: newFilter, filter })
+    if(!newFilter) alert('Please select a date filter')
+    newFilter && setDateFilter(newFilter);
+    newFilter && dispatch(setDateMode(newFilter));
+    newFilter && trigger({ userEmail, dateMode: newFilter, filter })
   };
   useEffect(() => {
     data && dispatch(getSalesData(data));
@@ -42,6 +43,7 @@ const DateFilters = () => {
         value={dateFilter}
         exclusive
         onChange={handleChange}
+        
         //onClick={() => dispatch(setDateMode(dateMode))}
       >
         <ToggleButton value="day">daily</ToggleButton>

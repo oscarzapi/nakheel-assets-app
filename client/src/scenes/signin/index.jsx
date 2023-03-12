@@ -5,7 +5,7 @@ import { loginRequest } from "../../authConfig";
 import { Box, List, ListItem } from '@mui/material';
 import profileImage from '../../assets/Nakheel.png'
 import { useDispatch, useSelector } from 'react-redux';
-import { loginSuccess, getSalesData, setDateMode } from 'state';
+import { loginSuccess, getSalesData } from 'state';
 import FlexBetween from 'components/FlexBetween';
 import { useLazyGetSalesDataQuery } from 'state/api';
 
@@ -15,11 +15,13 @@ const SignIn = () => {
   const dispatch = useDispatch()
   const userEmail = useSelector((state) => state.global.userEmail)
   const dateMode = useSelector((state) => state.global.dateMode)
+  const filter = useSelector((state) => state.global.filter)
+
   const [trigger, result] = useLazyGetSalesDataQuery()
 
 
   useEffect(() => {
-      trigger({userEmail, dateMode})
+      trigger({userEmail, dateMode, filter})
       .then(() => {
       result && result.data && dispatch(getSalesData(result.data))
       

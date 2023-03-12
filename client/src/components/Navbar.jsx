@@ -16,7 +16,6 @@ import {
   TextField,
   Toolbar,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 import { useIsAuthenticated } from "@azure/msal-react";
 import { SignOutButton } from "./SignOutButton";
@@ -24,7 +23,6 @@ import { SignInButton } from "./SignInButton";
 import { useState } from "react";
 //import domtoimage from 'dom-to-image';
 import * as htmlToImage from "html-to-image";
-import SearchIcon from "@mui/icons-material/Search";
 import DateFilters from "./DateFilters";
 import { useLazyGetSalesDataQuery } from "state/api";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,22 +32,22 @@ import { getSalesData, setFilter } from "state";
 const todaysDate = new Date().toISOString().split("T")[0];
 
 
-const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
+const Navbar = ({ userName, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
   const salesData = useSelector((state) => state.global.salesData)
   const dateMode = useSelector((state) => state.global.dateMode)
   const userEmail = useSelector((state) => state.global.userEmail)
+  const filter = useSelector((state) => state.global.filter)
   const isAuthenticated = useIsAuthenticated();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [value, setValue] = useState();
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
+  const [filterData, setFilterData] = useState('')
   //const data = [{exampleData:1}]
   const [trigger, {data}] = useLazyGetSalesDataQuery()
-  const handleChange = (event, newFilter) => {
-    console.log(newFilter)
-    setValue(newFilter);
+  const handleChange = (event, newFilter) => { 
+    setFilterData(newFilter)
     dispatch(setFilter(newFilter))
     trigger({ userEmail, dateMode, filter: newFilter })
   };
@@ -60,9 +58,12 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
           "USER_SALESDATA",
           JSON.stringify(data)
         );
+        window.localStorage.setItem(
+          "USER_FILTERDATA",
+          JSON.stringify(filterData)
+        );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
-  console.log(salesData)
 
 
   const handleSendEmail = async () => {
@@ -116,7 +117,7 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
         <Autocomplete
         id="combo-box-demo"
         options={salesData['AssetsAndTenantNames']}
-        sx={{ width:  150  }}
+        sx={{ width:  160  }}
         onChange={handleChange}
         renderInput={(params) => (
           <TextField {...params}

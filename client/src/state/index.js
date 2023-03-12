@@ -5,7 +5,7 @@ const initialState = {
     userEmail: '',
     userName:'',
     dateMode:'day',
-    filter: '',
+    filter: 'null',
     salesData: []
 }
 

@@ -74,7 +74,7 @@ xRenderer.grid.template.setAll({
     series.bullets.push(function() {
       let graphics = am5.Circle.new(root, {
         strokeWidth: 2,
-        radius: 3,
+        radius: 1,
         stroke: series.get("stroke"),
         fill: series.get("fill"),
       });
