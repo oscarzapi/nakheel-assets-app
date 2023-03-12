@@ -18,14 +18,13 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 const DateFilters = () => {
   const dispatch = useDispatch();
   const userEmail = useSelector((state) => state.global.userEmail);
-  const dateMode = useSelector((state) => state.global.dateMode);
-  const salesData = useSelector((state) => state.global.salesData);
+  const filter = useSelector((state) => state.global.filter);
   const [trigger, {data}] = useLazyGetSalesDataQuery();
   const [dateFilter, setDateFilter] = useState("day");
   const handleChange = (event, newFilter) => {
     setDateFilter(newFilter);
     dispatch(setDateMode(newFilter));
-    trigger({ userEmail, dateMode: newFilter })
+    trigger({ userEmail, dateMode: newFilter, filter })
   };
   useEffect(() => {
     data && dispatch(getSalesData(data));

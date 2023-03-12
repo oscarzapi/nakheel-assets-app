@@ -27,12 +27,15 @@ import * as htmlToImage from "html-to-image";
 import SearchIcon from "@mui/icons-material/Search";
 import DateFilters from "./DateFilters";
 import { useLazyGetSalesDataQuery } from "state/api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getSalesData, setFilter } from "state";
 
 const todaysDate = new Date().toISOString().split("T")[0];
 
 
 const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
+  const dispatch = useDispatch();
   const salesData = useSelector((state) => state.global.salesData)
   const dateMode = useSelector((state) => state.global.dateMode)
   const userEmail = useSelector((state) => state.global.userEmail)
@@ -44,11 +47,23 @@ const Navbar = ({ userData, userName, isSidebarOpen, setIsSidebarOpen }) => {
   const handleClose = () => setAnchorEl(null);
   //const data = [{exampleData:1}]
   const [trigger, {data}] = useLazyGetSalesDataQuery()
-  console.log(salesData)
   const handleChange = (event, newFilter) => {
+    console.log(newFilter)
     setValue(newFilter);
+    dispatch(setFilter(newFilter))
     trigger({ userEmail, dateMode, filter: newFilter })
   };
+  useEffect(() => {
+    data && dispatch(getSalesData(data));
+      data &&  
+        window.localStorage.setItem(
+          "USER_SALESDATA",
+          JSON.stringify(data)
+        );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+  console.log(salesData)
+
 
   const handleSendEmail = async () => {
     var node = document.getElementById("root");

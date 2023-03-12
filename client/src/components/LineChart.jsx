@@ -33,7 +33,7 @@ const LineChart = (props) => {
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
     let xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
-        start: 0.7,
+        start: 0.3,
         maxDeviation: 0.2,
         baseInterval: {
           timeUnit: "day",
@@ -44,27 +44,18 @@ const LineChart = (props) => {
         tooltip: am5.Tooltip.new(root, {}),
       })
     );
-    
-    
+    let xRenderer = xAxis.get("renderer");
+xRenderer.grid.template.setAll({
+  strokeOpacity: 0
+});
 
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         numberFormat: '#a',
         renderer: am5xy.AxisRendererY.new(root, {
-          line: {strokeOpacity:1}
         }),
       })
     );
-    let distanceAxisRenderer = am5xy.AxisRendererY.new(root, {});
-distanceAxisRenderer.grid.template.set("forceHidden", true);
-let distanceAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-  renderer: distanceAxisRenderer,
-  tooltip: am5.Tooltip.new(root, {})
-}));
-
-
-    
-
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     let series = chart.series.push(
@@ -76,6 +67,7 @@ let distanceAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
         valueXField: "date",
         tooltip: am5.Tooltip.new(root, {
           labelText: "sales: {valueY}",
+          numberFormat: "#a"
         }),
       })
     );
@@ -91,6 +83,7 @@ let distanceAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
         sprite: graphics
       });
     });
+    series.get("tooltip").label.set("text", "[bold]{name}[/]\n{valueX.formatDate()}: {valueY}")
 
     // Set data
     //let data = generateDatas(1200);
@@ -98,14 +91,14 @@ let distanceAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
 
 
     // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    let cursor = chart.set(
+    chart.set(
       "cursor",
       am5xy.XYCursor.new(root, {
+        behavior: "zoomXY",
         xAxis: xAxis,
       })
     );
-    cursor.lineY.set("visible", false);
+
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
     series.appear(1000);
