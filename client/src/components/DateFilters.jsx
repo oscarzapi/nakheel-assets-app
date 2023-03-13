@@ -19,18 +19,20 @@ const DateFilters = () => {
   const dispatch = useDispatch();
   const userEmail = useSelector((state) => state.global.userEmail);
   const filter = useSelector((state) => state.global.filter);
-  const [trigger, {data,isLoading}] = useLazyGetSalesDataQuery();
+  const [trigger, {data,isFetching }] = useLazyGetSalesDataQuery();
   const [dateFilter, setDateFilter] = useState("day");
-  console.log(isLoading )
   const handleChange = (event, newFilter) => {
-
     if(!newFilter) alert('Please select a date filter')
     newFilter && setDateFilter(newFilter);
     newFilter && dispatch(setDateMode(newFilter));
     newFilter && trigger({ userEmail, dateMode: newFilter, filter })
   };
+
   useEffect(() => {
-    dispatch(setLoading(isLoading ))
+    dispatch(setLoading(isFetching))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetching])
+  useEffect(() => {
     data && dispatch(getSalesData(data));
       data &&  
         window.localStorage.setItem(
