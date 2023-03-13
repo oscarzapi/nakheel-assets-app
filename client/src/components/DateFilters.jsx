@@ -1,7 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSalesData, setDateMode } from "state";
+import { getSalesData, setDateMode, setLoading } from "state";
 import { useLazyGetSalesDataQuery } from "state/api";
 const { styled } = require("@mui/system");
 
@@ -19,15 +19,18 @@ const DateFilters = () => {
   const dispatch = useDispatch();
   const userEmail = useSelector((state) => state.global.userEmail);
   const filter = useSelector((state) => state.global.filter);
-  const [trigger, {data}] = useLazyGetSalesDataQuery();
+  const [trigger, {data,isLoading}] = useLazyGetSalesDataQuery();
   const [dateFilter, setDateFilter] = useState("day");
+  console.log(isLoading )
   const handleChange = (event, newFilter) => {
+
     if(!newFilter) alert('Please select a date filter')
     newFilter && setDateFilter(newFilter);
     newFilter && dispatch(setDateMode(newFilter));
     newFilter && trigger({ userEmail, dateMode: newFilter, filter })
   };
   useEffect(() => {
+    dispatch(setLoading(isLoading ))
     data && dispatch(getSalesData(data));
       data &&  
         window.localStorage.setItem(

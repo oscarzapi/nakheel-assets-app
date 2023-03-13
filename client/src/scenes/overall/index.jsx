@@ -11,6 +11,7 @@ import { AttachMoneyOutlined } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSalesData, setUserName } from "state";
+import { useState } from "react";
 
 
 const Overall = () => {
@@ -20,6 +21,7 @@ const Overall = () => {
   const userName = useSelector((state) => state.global.userName);
   const salesData = useSelector((state) => state.global.salesData)
   const dateMode = useSelector((state) => state.global.dateMode)
+  const loading = useSelector((state) => state.global.loading);
 
 
   useEffect(() => {
@@ -32,9 +34,14 @@ const Overall = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName, dateMode]);
 
+  useEffect(() => {
+    console.log(loading)
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading])
+
   return (
-    <Box m="6rem 2rem">
-      {isAuthenticated ? (
+    <Box m="10rem 2rem">
+      {isAuthenticated && !loading ? (
         <Box>
           <FlexBetween>
             <Header title="Overview"></Header>
@@ -62,7 +69,7 @@ const Overall = () => {
                 title="Total Sales"
                 value={salesData['totalSales']}
                 change={salesData['percentageChange']}
-                chart={salesData['salesData'] && <LineChart data={salesData['salesData']} title='Total Sales'></LineChart>}
+                chart={salesData['salesData'] && <LineChart data={salesData['salesData']} title='Total Sales' width="100%" height="80%"></LineChart>}
                 icon={<AttachMoneyOutlined></AttachMoneyOutlined>}
               ></StatBox>
               </Box>
@@ -76,7 +83,7 @@ const Overall = () => {
                 title="Sales Performance"
                 value={20}
                 change={14}
-                chart={<BubbleChart data={salesData}></BubbleChart>}
+                chart={<BubbleChart data={salesData} ></BubbleChart>}
                 icon={<AttachMoneyOutlined></AttachMoneyOutlined>}
               ></StatBox>
               </Box>

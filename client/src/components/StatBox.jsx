@@ -3,19 +3,14 @@ import { Box, Button, Typography } from "@mui/material";
 import FlexBetween from "./FlexBetween";
 import { ArrowRightOutlined } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const StatBox = ({ title, value, change, chart, icon }) => {
-  const { pathname } = useLocation();
-  const [active, setActive] = useState("");
   const navigate = useNavigate();
-
+  const { pathname } = useLocation();
 
   const handleClick = () => {
-    const lcText = title.toLowerCase().replace(/ /g,"_").concat('_details')
-    navigate(`/${lcText}`)
-    console.log(`You clicked ${title.toLowerCase()}`);
+    const lcText = title.toLowerCase().replace(/ /g, "_").concat("_details");
+    navigate(`/${lcText}`);
   };
   return (
     <Box
@@ -33,28 +28,45 @@ const StatBox = ({ title, value, change, chart, icon }) => {
       color="#03293C"
     >
       <FlexBetween>
-        <Typography variant="h5" sx={{ color: "#03293C", marginBottom: '0px' }}>
-          {title}
-          <Typography sx={{ color: "#808B90", fontSize: "12px", marginTop: '0px' }}>
-            <Button onClick={handleClick}>
-              See Details
-              <ArrowRightOutlined></ArrowRightOutlined>
-            </Button>
+        <Box>
+          {" "}
+          <Typography
+            variant="h5"
+            sx={{ color: "#03293C", marginBottom: "0px" }}
+          >
+            {icon}{title}
+            <Typography
+              sx={{ color: "#808B90", fontSize: "12px", marginTop: "0px" }}
+            >
+              <Button onClick={handleClick}>
+                {pathname === "/overall" ? (
+                  <>
+                    See Details <ArrowRightOutlined></ArrowRightOutlined>
+                  </>
+                ) : (
+                  ""
+                )}
+              </Button>
+            </Typography>
           </Typography>
-        </Typography>
+        </Box>
+
         <Typography variant="h5" sx={{ color: "#03293C" }}>
           {" "}
           {value}
-          <Typography sx={{ fontSize: '15px', color: change > 0 ? "green" : "red", paddingLeft: '2rem' }}>
+          <Typography
+            sx={{
+              fontSize: "15px",
+              color: change > 0 ? "green" : "red",
+              paddingLeft: "2rem",
+            }}
+          >
             {" "}
             {change} %
           </Typography>
         </Typography>
       </FlexBetween>
       {chart}
-      <FlexBetween gap="1rem">
-        <Typography variant="h4"> {icon} </Typography>
-      </FlexBetween>
     </Box>
   );
 };

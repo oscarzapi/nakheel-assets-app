@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import SelfService from "scenes/selfservice"; */
 const Layout = lazy(() => import('scenes/layout'))
 const Overall = lazy(() => import('scenes/overall'))
-const TotalSalesDetails = lazy(() => import('scenes/totalSalesDetails'))
+const TotalSalesDetails = lazy(() => import('scenes/totalsalesdetails'))
 
 
 

@@ -173,12 +173,12 @@ export const getData = async (req, res) => {
               date: parseInt(new Date(o[dateMode]).getTime().toFixed(0)),
               value: 0,
             };
-            r[o[dateMode]].value += +o.value;
+            r[o[dateMode]].value += parseInt(+o.value);
             return r;
           }, {})
         );
 
-        console.log(userEmail, dateMode, filter, salesData.length);
+        console.log(userEmail, dateMode, filter, salesData);
 
 
         //console.log(salesData);

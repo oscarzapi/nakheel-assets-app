@@ -6,7 +6,8 @@ const initialState = {
     userName:'',
     dateMode:'day',
     filter: 'null',
-    salesData: []
+    salesData: [],
+    loading: false
 }
 
 export const globalSlice = createSlice({
@@ -35,9 +36,13 @@ export const globalSlice = createSlice({
         getSalesData: (state, action) => {
             state.salesData = action.payload
         },
+        setLoading: (state, action) => {
+            state.loading = action.payload
+        },
+        
     }
 })
 
-export const {setMode, loginSuccess, logout, setDateMode, setFilter, getSalesData, setUserName } = globalSlice.actions
+export const {setMode, loginSuccess, logout, setDateMode, setFilter, getSalesData, setUserName, setLoading } = globalSlice.actions
 
 export default globalSlice.reducer
